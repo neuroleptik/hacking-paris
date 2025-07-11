@@ -69,8 +69,8 @@ export function AppSidebar({
           /* Overriding the hardcoded { disply:table } to get full flex height */
           className="h-full [&>[data-radix-scroll-area-viewport]>div]:!flex [&>[data-radix-scroll-area-viewport]>div]:h-full [&>[data-radix-scroll-area-viewport]>div]:flex-col"
         >
-          <div className="text-sm text-muted-foreground ms-3">
-            {chzBalance} CHZ
+          <div className="text-sm text-muted-foreground ms-4">
+            <span className="text-primary">{chzBalance}</span> CHZ
           </div>
           <NavMain />
           <NavFavorites favorites={favorites} />
