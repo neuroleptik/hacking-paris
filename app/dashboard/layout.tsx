@@ -40,7 +40,7 @@ export default async function DashboardLayout({
     !userFromDb!.completedOnboarding ||
     !userFromDb!.organization!.completedOnboarding
   ) {
-    return redirect(Routes.Onboarding);
+    // return redirect(Routes.Onboarding);
   }
 
   const [favorites, profile] = await Promise.all([

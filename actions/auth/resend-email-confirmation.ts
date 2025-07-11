@@ -30,6 +30,7 @@ export const resendEmailConfirmation = actionClient
     }
 
     const otp = randomString(3).toUpperCase();
+    console.log(otp);
     const hashedOtp = await createHash(`${otp}${process.env.AUTH_SECRET}`);
 
     await prisma.verificationToken.create({
@@ -45,7 +46,7 @@ export const resendEmailConfirmation = actionClient
 
     await sendVerifyEmailAddressEmail({
       recipient: maybeUser.email,
-      name: maybeUser.name,
+      name: maybeUser.name as string,
       otp,
       verificationLink: `${getBaseUrl()}${Routes.VerifyEmailRequest}/${hashedOtp}`
     });

@@ -79,6 +79,6 @@ export const join = actionClient
       email: parsedInput.email,
       password: parsedInput.password,
       redirect: true,
-      redirectTo: Routes.Onboarding
+      // redirectTo: Routes.Onboarding
     });
   });

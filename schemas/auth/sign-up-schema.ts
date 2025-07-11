@@ -20,16 +20,6 @@ export const signUpSchema = z.object({
     .min(1, 'Email is required.')
     .max(255, 'Maximum 255 characters allowed.')
     .email('Enter a valid email address.'),
-  password: z
-    .string({
-      required_error: 'Password is required.',
-      invalid_type_error: 'Password must be a string.'
-    })
-    .min(1, 'Password is required.')
-    .max(72, 'Maximum 72 characters allowed.')
-    .refine((arg) => passwordValidator.validate(arg).success, {
-      message: 'Password does not meet requirements.'
-    })
 });
 
 export type SignUpSchema = z.infer<typeof signUpSchema>;

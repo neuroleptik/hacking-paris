@@ -358,7 +358,7 @@ model User {
   id                           String               @id(map: "PK_User") @default(uuid()) @db.Uuid
   organizationId               String?              @db.Uuid
   image                        String?              @db.VarChar(2048)
-  name                         String               @db.VarChar(64)
+  name                         String?              @db.VarChar(64)
   email                        String?              @unique
   emailVerified                DateTime?
   password                     String?              @db.VarChar(60)
@@ -372,7 +372,7 @@ model User {
   enabledWeeklySummary         Boolean              @default(false)
   enabledNewsletter            Boolean              @default(false)
   enabledProductUpdates        Boolean              @default(false)
-  walletAddress                String?              @db.VarChar(255)
+  walletAddress                String               @db.VarChar(255)
   createdAt                    DateTime             @default(now())
   updatedAt                    DateTime             @updatedAt
   accounts                     Account[]
@@ -387,6 +387,7 @@ model User {
   pageVisits                   ContactPageVisit[]
   sessions                     Session[]
 
+  @@unique([walletAddress], map: "IX_User_walletAddress")
   @@index([organizationId], map: "IX_User_organizationId")
 }
 

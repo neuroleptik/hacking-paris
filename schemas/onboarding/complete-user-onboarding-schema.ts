@@ -21,12 +21,13 @@ export const completeUserOnboardingSchema = z.object({
     .trim()
     .min(1, 'Name is required.')
     .max(64, 'Maximum 64 characters allowed.'),
-  phone: z
+  email: z
     .string({
-      invalid_type_error: 'Phone must be a string.'
+      invalid_type_error: 'Email must be a string.'
     })
     .trim()
-    .max(16, 'Maximum 16 characters allowed.')
+    .email('Invalid email address.')
+    .max(255, 'Maximum 255 characters allowed.')
     .optional()
     .or(z.literal('')),
   theme: z.literal('light').or(z.literal('dark').or(z.literal('system')))

@@ -102,6 +102,39 @@ export const providers = [
     }
   }),
   CredentialsProvider({
+    id: IdentityProvider.Wallet,
+    name: IdentityProvider.Wallet,
+    credentials: {
+      walletAddress: { label: 'Wallet Address', type: 'text' }
+    },
+    async authorize(credentials) {
+      console.log("Authorizing wallet");
+      console.log(credentials);
+      if (!credentials?.walletAddress) {
+        throw new InternalServerError();
+      }
+      const user = await prisma.user.findUnique({
+        where: { walletAddress: credentials.walletAddress as string },
+        select: {
+          id: true,
+          organizationId: true,
+          email: true,
+          emailVerified: true,
+          name: true
+        }
+      });
+      if (!user) {
+        throw new InternalServerError();
+      }
+      return {
+        id: user.id,
+        organizationId: user.organizationId,
+        email: user.email,
+        name: user.name
+      };
+    }
+  }),
+  CredentialsProvider({
     id: IdentityProvider.TotpCode,
     name: IdentityProvider.TotpCode,
     credentials: {
