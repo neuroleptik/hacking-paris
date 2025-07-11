@@ -63,8 +63,8 @@ function HeroTitle(): React.JSX.Element {
       transition={{ delay: 0.2, duration: 0.4 }}
     >
       <h1 className="mt-6 text-center text-[48px] font-bold leading-[54px] tracking-[-1.2px] [font-kerning:none] sm:text-[56px] md:text-[64px] lg:text-[76px] lg:leading-[74px] lg:tracking-[-2px]">
-        Your revolutionary
-        <br /> Next.js SaaS
+        Hacking Paris Demo
+        <br /> By JB, Tom And Armand
       </h1>
     </motion.div>
   );
