@@ -90,19 +90,19 @@ export const callbacks = {
       return false;
     }
 
-    if (
-      !Object.values(OAuthIdentityProvider).includes(
-        account.provider.toLowerCase() as OAuthIdentityProvider
-      )
-    ) {
-      return `${Routes.AuthError}?error=${AuthErrorCode.IllegalOAuthProvider}`;
-    }
+    // if (
+    //   !Object.values(OAuthIdentityProvider).includes(
+    //     account.provider.toLowerCase() as OAuthIdentityProvider
+    //   )
+    // ) {
+    //   return `${Routes.AuthError}?error=${AuthErrorCode.IllegalOAuthProvider}`;
+    // }
 
-    if (account.provider === OAuthIdentityProvider.Google) {
-      if (!profile.email_verified) {
-        return `${Routes.AuthError}?error=${AuthErrorCode.UnverifiedEmail}`;
-      }
-    }
+    // if (account.provider === OAuthIdentityProvider.Google) {
+    //   if (!profile.email_verified) {
+    //     return `${Routes.AuthError}?error=${AuthErrorCode.UnverifiedEmail}`;
+    //   }
+    // }
 
     if (account.provider === OAuthIdentityProvider.MicrosoftEntraId) {
       // Microsoft does not provide a verified email field

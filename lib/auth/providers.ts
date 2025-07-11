@@ -123,9 +123,11 @@ export const providers = [
           name: true
         }
       });
+      console.log("User found", user);
       if (!user) {
         throw new InternalServerError();
       }
+
       return {
         id: user.id,
         organizationId: user.organizationId,

@@ -86,14 +86,21 @@ export default function ConnectChilizWallet(props: { step: number }) {
       });
 
       console.log(verifyRes);
-      if (verifyRes.step === 1) {
-        console.log('Step 1');
-        setStep(1);
-      } else if (verifyRes.step === 2) {
-        console.log('Step 2');
-        setStep(2);
-      } else if (verifyRes.step === 3) {
-        window.location.href = Routes.Dashboard;
+      if (verifyRes.success) {
+        if (verifyRes.shouldRedirect) {
+          window.location.href = Routes.Dashboard;
+        } else {
+          if (verifyRes.step === 1) {
+            console.log('Step 1');
+            setStep(1);
+          } else if (verifyRes.step === 2) {
+            console.log('Step 2');
+            setStep(2);
+          } else if (verifyRes.step === 3) {
+            console.log('Step 3');
+            setStep(3);
+          }
+        }
       }
 
       setAccount(accounts[0]);

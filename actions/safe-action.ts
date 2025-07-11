@@ -39,9 +39,9 @@ export const actionClient = createSafeActionClient({
 
 export const authActionClient = actionClient.use(async ({ next }) => {
   const session = await dedupedAuth();
-  if (!checkSession(session)) {
-    return redirect(getLoginRedirect());
-  }
+  // if (!checkSession(session)) {
+  //   return redirect(getLoginRedirect());
+  // }
 
   return next({ ctx: { session } });
 });

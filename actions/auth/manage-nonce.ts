@@ -3,7 +3,6 @@
 import { ethers } from 'ethers';
 import { prisma } from '@/lib/db/prisma';
 import { Routes } from '@/constants/routes';
-import { redirect } from 'next/navigation';
 import { IdentityProvider } from '@/types/identity-provider';
 import { signIn } from '@/lib/auth';
 
@@ -22,7 +21,7 @@ export async function verifySignature({
 }: {
   address: string;
   signature: string;
-}): Promise<{ success: boolean; error?: string; step?: number }> {
+}): Promise<{ success: boolean; error?: string; shouldRedirect?: boolean; step?: number }> {
   const nonce = nonces.get(address.toLowerCase());
   if (!nonce) {
     return { success: false, error: 'Nonce not found or expired' };
@@ -49,17 +48,18 @@ export async function verifySignature({
       if(user.email && user.emailVerified){
          await signIn(IdentityProvider.Wallet, {
         walletAddress: address,
-        redirectTo: Routes.Dashboard
       });
+      console.log("User already exists");
         // redirect to dashboard
-        redirect(Routes.Dashboard);
+        // redirect(Routes.Dashboard);
+        return { success: true, shouldRedirect: true };
       }
       else{
         if(user.email && !user.emailVerified){
            await signIn(IdentityProvider.Wallet, {
         walletAddress: address,
-        redirectTo: Routes.Dashboard
       });
+      console.log("User already exists 2");
           // redirect to email verification
           return { success: true, step: 2 };
         }
@@ -67,8 +67,8 @@ export async function verifySignature({
           if(!user.email && !user.emailVerified){// redirect to profile completion
              await signIn(IdentityProvider.Wallet, {
         walletAddress: address,
-        redirectTo: Routes.Dashboard
       });
+      console.log("User already exists 3");
             return { success: true, step: 1 };
           }
         }
@@ -100,12 +100,13 @@ export async function verifySignature({
 
       await signIn(IdentityProvider.Wallet, {
         walletAddress: address,
-        redirectTo: Routes.Dashboard
       });
-      return { success: true, step: 1 };
+      return { success: true, shouldRedirect: true };
     }
 
-  } catch {
+  } catch (error) {
+    console.log(error);
+    console.log("Verification failed");
     return { success: false, error: 'Verification failed' };
   }
 }
