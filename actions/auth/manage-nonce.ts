@@ -48,6 +48,7 @@ export async function verifySignature({
       if(user.email && user.emailVerified){
          await signIn(IdentityProvider.Wallet, {
         walletAddress: address,
+        redirect: false
       });
       console.log("User already exists");
         // redirect to dashboard
@@ -58,6 +59,7 @@ export async function verifySignature({
         if(user.email && !user.emailVerified){
            await signIn(IdentityProvider.Wallet, {
         walletAddress: address,
+        redirect: false
       });
       console.log("User already exists 2");
           // redirect to email verification
@@ -67,7 +69,8 @@ export async function verifySignature({
           if(!user.email && !user.emailVerified){// redirect to profile completion
              await signIn(IdentityProvider.Wallet, {
         walletAddress: address,
-      });
+        redirect: false
+        });
       console.log("User already exists 3");
             return { success: true, step: 1 };
           }
@@ -91,6 +94,7 @@ export async function verifySignature({
           organizationId: organization.id,
           name: "Default User",
           email: "default@example.com",
+          emailVerified: new Date()
         }
       });
       
@@ -100,6 +104,7 @@ export async function verifySignature({
 
       await signIn(IdentityProvider.Wallet, {
         walletAddress: address,
+        redirect: false
       });
       return { success: true, shouldRedirect: true };
     }
