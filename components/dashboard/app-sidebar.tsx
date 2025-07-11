@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 
+import { getCHZBalance } from '@/actions/crypto/get-ballance';
 import { NavFavorites } from '@/components/dashboard/nav-favorites';
 import { NavMain } from '@/components/dashboard/nav-main';
 import { NavSupport } from '@/components/dashboard/nav-support';
@@ -25,16 +26,19 @@ import type { ProfileDto } from '@/types/dtos/profile-dto';
 export type AppSidebarProps = {
   favorites: FavoriteDto[];
   profile: ProfileDto;
+  chzBalance: string;
 };
 
 export function AppSidebar({
   favorites,
-  profile
+  profile,
+  chzBalance
 }: AppSidebarProps): React.JSX.Element {
   const sidebar = useSidebar();
   const xlUp = useMediaQuery(MediaQueries.XlUp, { ssr: true, fallback: true });
   const isCollapsed = !sidebar.isMobile && !sidebar.open;
   const showLogo = !isCollapsed || !xlUp;
+
   React.useEffect(() => {
     sidebar.setOpen(xlUp);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,6 +69,9 @@ export function AppSidebar({
           /* Overriding the hardcoded { disply:table } to get full flex height */
           className="h-full [&>[data-radix-scroll-area-viewport]>div]:!flex [&>[data-radix-scroll-area-viewport]>div]:h-full [&>[data-radix-scroll-area-viewport]>div]:flex-col"
         >
+          <div className="text-sm text-muted-foreground ms-3">
+            {chzBalance} CHZ
+          </div>
           <NavMain />
           <NavFavorites favorites={favorites} />
           <NavSupport

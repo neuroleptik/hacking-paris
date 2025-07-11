@@ -13,6 +13,7 @@ import { ProfileDto } from '@/types/dtos/profile-dto';
 export type SidebarRendererProps = {
   favorites: FavoriteDto[];
   profile: ProfileDto;
+  chzBalance: string;
 };
 
 export function SidebarRenderer(

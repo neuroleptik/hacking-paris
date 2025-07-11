@@ -2,6 +2,7 @@ import * as React from 'react';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
+import { getCHZBalance } from '@/actions/crypto/get-ballance';
 import { SidebarRenderer } from '@/components/dashboard/sidebar-renderer';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { Routes } from '@/constants/routes';
@@ -47,6 +48,8 @@ export default async function DashboardLayout({
     getFavorites(),
     getProfile()
   ]);
+  const chzBalance = await getCHZBalance();
+  console.log(chzBalance);
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -54,6 +57,7 @@ export default async function DashboardLayout({
         <SidebarRenderer
           favorites={favorites}
           profile={profile}
+          chzBalance={chzBalance.data.balance}
         />
         {/* Set max-width so full-width tables can overflow horizontally correctly */}
         <SidebarInset
