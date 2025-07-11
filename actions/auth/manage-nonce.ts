@@ -47,16 +47,28 @@ export async function verifySignature({
 
     if (user) {
       if(user.email && user.emailVerified){
+         await signIn(IdentityProvider.Wallet, {
+        walletAddress: address,
+        redirectTo: Routes.Dashboard
+      });
         // redirect to dashboard
         redirect(Routes.Dashboard);
       }
       else{
         if(user.email && !user.emailVerified){
+           await signIn(IdentityProvider.Wallet, {
+        walletAddress: address,
+        redirectTo: Routes.Dashboard
+      });
           // redirect to email verification
           return { success: true, step: 2 };
         }
         else{
           if(!user.email && !user.emailVerified){// redirect to profile completion
+             await signIn(IdentityProvider.Wallet, {
+        walletAddress: address,
+        redirectTo: Routes.Dashboard
+      });
             return { success: true, step: 1 };
           }
         }
