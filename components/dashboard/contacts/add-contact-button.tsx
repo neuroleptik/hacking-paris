@@ -5,10 +5,17 @@ import NiceModal from '@ebay/nice-modal-react';
 
 import { AddContactModal } from '@/components/dashboard/contacts/add-contact-modal';
 import { Button } from '@/components/ui/button';
+import { ProfileDto } from '@/types/dtos/profile-dto';
 
-export function AddContactButton(): React.JSX.Element {
-  const handleShowAddContactModal = (): void => {
-    NiceModal.show(AddContactModal);
+import { InviteMemberModal } from '../settings/organization/members/invite-member-modal';
+
+export function AddContactButton({
+  profile
+}: {
+  profile: ProfileDto;
+}): React.JSX.Element {
+  const handleShowInviteMemberModal = (): void => {
+    NiceModal.show(InviteMemberModal, { profile });
   };
   return (
     <Button
@@ -16,9 +23,9 @@ export function AddContactButton(): React.JSX.Element {
       variant="default"
       size="default"
       className="whitespace-nowrap"
-      onClick={handleShowAddContactModal}
+      onClick={handleShowInviteMemberModal}
     >
-      Add contact
+      Invite Member
     </Button>
   );
 }

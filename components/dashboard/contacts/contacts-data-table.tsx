@@ -48,10 +48,11 @@ import { useTransitionContext } from '@/hooks/use-transition-context';
 import { cn } from '@/lib/utils';
 import { GetContactsSortBy } from '@/schemas/contacts/get-contacts-schema';
 import type { ContactDto } from '@/types/dtos/contact-dto';
+import { MemberDto } from '@/types/dtos/member-dto';
 import { SortDirection } from '@/types/sort-direction';
 
 export type ContactsDataTableProps = {
-  data: ContactDto[];
+  data: MemberDto[];
   totalCount: number;
 };
 

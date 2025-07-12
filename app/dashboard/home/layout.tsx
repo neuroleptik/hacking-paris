@@ -6,6 +6,7 @@ import { InfoIcon } from 'lucide-react';
 
 import { HomeFilters } from '@/components/dashboard/home/home-filters';
 import { HomeSpinner } from '@/components/dashboard/home/home-spinner';
+import { ClubList } from '@/components/home/club-list';
 import { XIcon } from '@/components/ui/brand-icons';
 import { buttonVariants } from '@/components/ui/button';
 import {
@@ -46,47 +47,21 @@ export default function HomeLayout({
         <PageHeader>
           <PagePrimaryBar>
             <div className="flex flex-row items-center gap-1">
-              <PageTitle>Overview</PageTitle>
+              <PageTitle>Clubs Ranking</PageTitle>
               <Tooltip delayDuration={0}>
                 <TooltipTrigger asChild>
                   <InfoIcon className="hidden size-3 shrink-0 text-muted-foreground sm:inline" />
                 </TooltipTrigger>
                 <TooltipContent>
-                  Lead and contact engagement metrics
+                  Clubs ranking based on the number of members transactions
                 </TooltipContent>
               </Tooltip>
             </div>
-            <PageActions>
-              <Link
-                href="https://github.com/achromaticlabs/pro"
-                target="_blank"
-                className={buttonVariants({ variant: 'ghost', size: 'icon' })}
-              >
-                <GitHubLogoIcon className="size-4 shrink-0" />
-                <span className="sr-only">GitHub</span>
-              </Link>
-              <Link
-                href="https://x.com/achromaticlabs"
-                target="_blank"
-                className={buttonVariants({ variant: 'ghost', size: 'icon' })}
-              >
-                <XIcon className="size-4 shrink-0" />
-                <span className="sr-only">X (formerly Twitter)</span>
-              </Link>
-            </PageActions>
           </PagePrimaryBar>
-          <PageSecondaryBar>
-            <HomeFilters />
-          </PageSecondaryBar>
+          {/* <PageSecondaryBar><HomeFilters /></PageSecondaryBar> */}
         </PageHeader>
         <PageBody>
-          <div className="mx-auto max-w-6xl space-y-2 p-2 sm:space-y-8 sm:p-6">
-            {leadGeneration}
-            <div className="grid grid-cols-1 gap-2 sm:gap-8 md:grid-cols-2">
-              {mostVisitedContacts}
-              {leastVisitedContacts}
-            </div>
-          </div>
+          <ClubList />
           <HomeSpinner />
         </PageBody>
       </Page>

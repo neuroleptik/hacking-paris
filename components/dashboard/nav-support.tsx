@@ -43,17 +43,6 @@ export function NavSupport({
             <span>Invite member</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton
-            type="button"
-            tooltip="Feedback"
-            className="text-muted-foreground"
-            onClick={handleShowFeedbackModal}
-          >
-            <MessageCircleIcon className="size-4 shrink-0" />
-            <span>Feedback</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   );

@@ -122,10 +122,10 @@ export function NavFavorites({
           asChild
           className="group/label hover:bg-sidebar-accent group-data-[collapsible=icon]:mt-0"
         >
-          <CollapsibleTrigger className="group-data-[collapsible=icon]:invisible">
+          {/* <CollapsibleTrigger className="group-data-[collapsible=icon]:invisible">
             <span className="text-sm text-muted-foreground">Favorites</span>
             <ChevronRightIcon className="ml-auto hidden transition-transform duration-200 group-hover/label:inline group-data-[state=open]/collapsible:rotate-90" />
-          </CollapsibleTrigger>
+          </CollapsibleTrigger> */}
         </SidebarGroupLabel>
         <CollapsibleContent>
           <SidebarGroupContent className="mt-2">

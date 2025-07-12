@@ -7,6 +7,9 @@ import { ContactsDataTable } from '@/components/dashboard/contacts/contacts-data
 import { ContactsEmptyState } from '@/components/dashboard/contacts/contacts-empty-state';
 import { ContactsFilters } from '@/components/dashboard/contacts/contacts-filters';
 import { searchParamsCache } from '@/components/dashboard/contacts/contacts-search-params';
+import { InvitationList } from '@/components/dashboard/settings/organization/members/invitation-list';
+import { InvitationsCard } from '@/components/dashboard/settings/organization/members/invitations-card';
+import { MembersCard } from '@/components/dashboard/settings/organization/members/members-card';
 import {
   Page,
   PageActions,
@@ -21,14 +24,24 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip';
+import { getProfile } from '@/data/account/get-profile';
 import { getContactTags } from '@/data/contacts/get-contact-tags';
 import { getContacts } from '@/data/contacts/get-contacts';
+import { getInvitations } from '@/data/invitations/get-invitations';
+import { getMembers } from '@/data/members/get-members';
 import { TransitionProvider } from '@/hooks/use-transition-context';
 import { createTitle } from '@/lib/utils';
 import type { NextPageProps } from '@/types/next-page-props';
 
+import MembersLayout from '../settings/organization/members/layout';
+
 export const metadata: Metadata = {
-  title: createTitle('Contacts')
+  title: createTitle('Members')
+};
+
+export type MembersLayoutProps = {
+  team: React.ReactNode;
+  invitations: React.ReactNode;
 };
 
 export default async function ContactsPage({
@@ -41,50 +54,24 @@ export default async function ContactsPage({
     getContactTags()
   ]);
 
-  const hasAnyContacts = totalCount > 0;
+  const profile = await getProfile();
+
+  const members = await getMembers();
+
+  const invitations = await getInvitations();
+
+  const hasAnyMembers = members.length > 0;
 
   return (
-    <TransitionProvider>
-      <Page>
-        <PageHeader>
-          <PagePrimaryBar>
-            <div className="flex flex-row items-center gap-1">
-              <PageTitle>Contacts</PageTitle>
-              <Tooltip delayDuration={0}>
-                <TooltipTrigger asChild>
-                  <InfoIcon className="hidden size-3 shrink-0 text-muted-foreground sm:inline" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  Total {totalCount} {totalCount === 1 ? 'contact' : 'contacts'}{' '}
-                  in your organization
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            {hasAnyContacts && (
-              <PageActions>
-                <AddContactButton />
-              </PageActions>
-            )}
-          </PagePrimaryBar>
-          <PageSecondaryBar>
-            <React.Suspense>
-              <ContactsFilters tags={tags} />
-            </React.Suspense>
-          </PageSecondaryBar>
-        </PageHeader>
-        <PageBody disableScroll={hasAnyContacts}>
-          {hasAnyContacts ? (
-            <React.Suspense>
-              <ContactsDataTable
-                data={contacts}
-                totalCount={filteredCount}
-              />
-            </React.Suspense>
-          ) : (
-            <ContactsEmptyState />
-          )}
-        </PageBody>
-      </Page>
-    </TransitionProvider>
+    <div className="m-5 flex flex-col gap-5">
+      <MembersCard
+        members={members}
+        profile={profile}
+      />
+      <InvitationsCard
+        invitations={invitations}
+        profile={profile}
+      />
+    </div>
   );
 }

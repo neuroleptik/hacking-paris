@@ -2,7 +2,7 @@ import {
   BellIcon,
   CodeIcon,
   CreditCardIcon,
-  HomeIcon,
+  Volleyball,
   LockKeyholeIcon,
   SettingsIcon,
   StoreIcon,
@@ -16,12 +16,12 @@ import type { NavItem } from '@/types/nav-item';
 
 export const mainNavItems: NavItem[] = [
   {
-    title: 'Home',
+    title: 'Clubs',
     href: Routes.Home,
-    icon: HomeIcon
+    icon: Volleyball
   },
   {
-    title: 'Contacts',
+    title: 'Members',
     href: Routes.Contacts,
     icon: UsersIcon
   },
