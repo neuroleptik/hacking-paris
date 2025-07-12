@@ -1,5 +1,5 @@
 {
-  "buildCommand": "rm -f tsconfig.json && next build && prisma migrate deploy",
+  "buildCommand": "next build && prisma migrate deploy",
   "outputDirectory": ".next",
   "framework": "nextjs"
 }
