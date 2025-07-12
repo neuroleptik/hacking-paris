@@ -1,0 +1,68 @@
+{
+  "Paris Saint-Germain": [
+    {
+      "title": "PSG Collector Scarf",
+      "shortDescription": "Limited edition scarf with printed signatures",
+      "minimumPoints": 1000
+    },
+    {
+      "title": "Customized Home Jersey",
+      "shortDescription": "Official jersey with custom printing",
+      "minimumPoints": 2500
+    },
+    {
+      "title": "Parc des Princes Tour",
+      "shortDescription": "Exclusive guided tour of stadium backstage",
+      "minimumPoints": 5000
+    },
+    {
+      "title": "Team Photo Session",
+      "shortDescription": "Exclusive photo shoot with first team",
+      "minimumPoints": 10000
+    }
+  ],
+  "AC Milan": [
+    {
+      "title": "Rossoneri Classic Scarf",
+      "shortDescription": "Historic pattern San Siro scarf",
+      "minimumPoints": 1000
+    },
+    {
+      "title": "Milan Home Kit Legend Edition",
+      "shortDescription": "Jersey with iconic number 3, 6 or 9",
+      "minimumPoints": 2500
+    },
+    {
+      "title": "San Siro Legends Tour",
+      "shortDescription": "Guided tour with Milan legend in San Siro",
+      "minimumPoints": 5000
+    },
+    {
+      "title": "Milanello Training Ground Day",
+      "shortDescription": "Visit training facility and meet the team",
+      "minimumPoints": 10000
+    }
+  ],
+  "Juventus": [
+    {
+      "title": "Bianconeri Victory Scarf",
+      "shortDescription": "Black and white classic design scarf",
+      "minimumPoints": 1000
+    },
+    {
+      "title": "Allianz Stadium Jersey",
+      "shortDescription": "Home jersey with special stadium patch",
+      "minimumPoints": 2500
+    },
+    {
+      "title": "Turin Football Heritage Tour",
+      "shortDescription": "Visit to J-Museum and stadium facilities",
+      "minimumPoints": 5000
+    },
+    {
+      "title": "Juventus Matchday VIP Experience",
+      "shortDescription": "Premium seats and post-match ceremony access",
+      "minimumPoints": 12000
+    }
+  ]
+}

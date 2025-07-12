@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { TrophyIcon } from 'lucide-react';
+import { GiftIcon, TrophyIcon } from 'lucide-react';
+
 import {
   Card,
   CardContent,
@@ -15,8 +16,9 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { ClubDetail } from './club-detail';
-import { StakeModal } from './stake-modal';
 import { DebugPanel } from './debug-panel';
+import { RewardsDialog } from './rewards-dialog';
+import { StakeModal } from './stake-modal';
 
 // Interface pour les données retournées par l'API
 export interface ClubInfo {
@@ -39,17 +41,17 @@ export interface Club {
 
 // Mapping des symboles vers les logos
 const symbolToLogo: Record<string, string> = {
-  'PSG': '/clubs/psg.png',
-  'ACM': '/clubs/acm.png',
-  'ATM': '/clubs/atletico_de_madrid.png',
-  'BAR': '/clubs/barcelona.png',
-  'CITY': '/clubs/manchester_city.png',
-  'ASR': '/clubs/as_roma.png',
-  'IM': '/clubs/inter_milan.png',
-  'NAP': '/clubs/napoli.png',
-  'ARS': '/clubs/arsenal.png',
-  'JUV': '/clubs/juv.png',
-  'TOT': '/clubs/tottenham.png',
+  PSG: '/clubs/psg.png',
+  ACM: '/clubs/acm.png',
+  ATM: '/clubs/atletico_de_madrid.png',
+  BAR: '/clubs/barcelona.png',
+  CITY: '/clubs/manchester_city.png',
+  ASR: '/clubs/as_roma.png',
+  IM: '/clubs/inter_milan.png',
+  NAP: '/clubs/napoli.png',
+  ARS: '/clubs/arsenal.png',
+  JUV: '/clubs/juv.png',
+  TOT: '/clubs/tottenham.png'
 };
 
 // Fonction pour convertir les données de l'API en format d'affichage
@@ -74,9 +76,13 @@ export function ClubList() {
   const [clubs, setClubs] = useState<Club[]>([]);
   const [loading, setLoading] = useState(true);
   const [stakeModalOpen, setStakeModalOpen] = useState(false);
-  const [selectedClubForStaking, setSelectedClubForStaking] = useState<Club | null>(null);
+  const [rewardsModalOpen, setRewardsModalOpen] = useState(false);
+  const [selectedClubForStaking, setSelectedClubForStaking] =
+    useState<Club | null>(null);
+  const [selectedClubForRewards, setSelectedClubForRewards] =
+    useState<Club | null>(null);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchClubs = async () => {
       try {
         setLoading(true);
@@ -85,8 +91,9 @@ export function ClubList() {
         console.log('clubs from API', data);
 
         if (data?.data?.length > 0) {
-          const convertedClubs = data.data.map((clubInfo: ClubInfo, index: number) =>
-            convertClubInfoToClub(clubInfo, index)
+          const convertedClubs = data.data.map(
+            (clubInfo: ClubInfo, index: number) =>
+              convertClubInfoToClub(clubInfo, index)
           );
           console.log('convertedClubs', convertedClubs);
           setClubs(convertedClubs);
@@ -105,6 +112,23 @@ export function ClubList() {
     fetchClubs();
   }, []);
 
+  const handleClubClick = (club: Club, index: number) => {
+    setSelectedClub(club);
+    setSelectedRanking(index);
+  };
+
+  const handleStakeClick = (e: React.MouseEvent, club: Club) => {
+    e.stopPropagation();
+    setSelectedClubForStaking(club);
+    setStakeModalOpen(true);
+  };
+
+  const handleRewardsClick = (e: React.MouseEvent, club: Club) => {
+    e.stopPropagation();
+    setSelectedClubForRewards(club);
+    setRewardsModalOpen(true);
+  };
+
   if (loading) {
     return (
       <Card className="w-full p-5 m-5 w-2/3 mx-auto">
@@ -112,9 +136,7 @@ export function ClubList() {
           <CardTitle className="flex items-center gap-2">
             <TrophyIcon className="w-6 h-6" /> Clubs Ranking
           </CardTitle>
-          <CardDescription>
-            Chargement des clubs...
-          </CardDescription>
+          <CardDescription>Chargement des clubs...</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center p-8">
@@ -141,15 +163,12 @@ export function ClubList() {
             <p className="text-muted-foreground">Aucun club disponible</p>
           </div>
         ) : (
-          <div className="space-y-4 ">
+          <div className="space-y-4">
             {clubs.map((club, index) => (
               <Card
                 key={club.symbol}
                 className="flex items-center space-x-4 p-4 cursor-pointer hover:bg-accent/50 transition-colors"
-                onClick={() => {
-                  setSelectedClub(club);
-                  setSelectedRanking(index);
-                }}
+                onClick={() => handleClubClick(club, index)}
               >
                 <div className="flex items-center space-x-4">
                   <Badge
@@ -176,17 +195,23 @@ export function ClubList() {
                     {club.totalStaked} staked
                   </div>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={(e: React.MouseEvent) => {
-                    e.stopPropagation();
-                    setSelectedClubForStaking(club);
-                    setStakeModalOpen(true);
-                  }}
-                >
-                  Staker
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={(e) => handleStakeClick(e, club)}
+                  >
+                    Staker
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={(e) => handleRewardsClick(e, club)}
+                  >
+                    <GiftIcon className="w-4 h-4 mr-1" />
+                    Rewards
+                  </Button>
+                </div>
               </Card>
             ))}
           </div>
@@ -206,6 +231,17 @@ export function ClubList() {
           setSelectedClubForStaking(null);
         }}
       />
+      {selectedClubForRewards && (
+        <RewardsDialog
+          isOpen={rewardsModalOpen}
+          onClose={() => {
+            setRewardsModalOpen(false);
+            setSelectedClubForRewards(null);
+          }}
+          clubName={selectedClubForRewards.name}
+          totalStaked={Number(selectedClubForRewards.totalStaked)}
+        />
+      )}
       <DebugPanel />
     </Card>
   );

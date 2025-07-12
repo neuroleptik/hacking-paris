@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { StackIcon } from '@radix-ui/react-icons';
 import { MedalIcon, TrophyIcon, ZapIcon } from 'lucide-react';
 
+import { Card } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -99,9 +100,7 @@ export function ClubDetail({
               <span className="flex items-center gap-2 mb-1">
                 <h2 className="font-semibold text-lg">Symbol</h2>
               </span>
-              <Badge className="text-md font-medium">
-                {club.symbol}
-              </Badge>
+              <Badge className="text-md font-medium">{club.symbol}</Badge>
             </div>
           </div>
           <Badge className="text-sm bg-green-600/10 text-green-600 mt-3 mb-3 hover:bg-green-600/10 hover:text-green-500 hover:cursor-default">
@@ -122,7 +121,7 @@ export function ClubDetail({
           </div>
           <Button
             variant="default"
-            className="space-y-2 bg-yellow-600 text-white hover:bg-yellow-500/80  gap-1"
+            className="bg-yellow-600 text-white hover:bg-yellow-500/80 gap-1"
           >
             <ZapIcon className="w-4 h-4" />
             Stack tokens
