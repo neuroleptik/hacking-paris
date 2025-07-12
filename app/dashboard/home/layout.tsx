@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { InfoIcon } from 'lucide-react';
 
+import { getClubs } from '@/actions/crypto/get-clubs';
 import { HomeFilters } from '@/components/dashboard/home/home-filters';
 import { HomeSpinner } from '@/components/dashboard/home/home-spinner';
 import { ClubList } from '@/components/home/club-list';
@@ -36,11 +37,13 @@ export type HomeLayoutProps = {
   leastVisitedContacts: React.ReactNode;
 };
 
-export default function HomeLayout({
+export default async function HomeLayout({
   leadGeneration,
   mostVisitedContacts,
   leastVisitedContacts
-}: HomeLayoutProps): React.JSX.Element {
+}: HomeLayoutProps): Promise<React.JSX.Element> {
+  const clubs = await getClubs();
+  console.log('clubs', clubs);
   return (
     <TransitionProvider>
       <Page>

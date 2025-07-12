@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { TrophyIcon } from 'lucide-react';
 
+import { getClubs } from '@/actions/crypto/get-clubs';
 import {
   Card,
   CardContent,
@@ -107,6 +108,18 @@ const clubs: Club[] = [
 export function ClubList() {
   const [selectedClub, setSelectedClub] = useState<Club | null>(null);
   const [selectedRanking, setSelectedRanking] = useState<number>(1);
+  // const [clubs, setClubs] = useState<Club[]>([]);
+
+  // useEffect(() => {
+  //   const fetchClubs = async () => {
+  //     const clubs = await getClubs();
+  //     console.log('clubs', clubs);
+  //     // setClubs(clubs as Club[]);
+  //   };
+  //   fetchClubs();
+  // }, []);
+
+  //
 
   return (
     <Card className="w-full p-5 m-5 w-2/3 mx-auto">

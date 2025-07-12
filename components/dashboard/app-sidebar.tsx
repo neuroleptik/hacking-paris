@@ -3,6 +3,7 @@
 import * as React from 'react';
 import Image from 'next/image';
 import NiceModal from '@ebay/nice-modal-react';
+import { InfoIcon } from 'lucide-react';
 
 import { CreateTokenPoolModal } from '@/components/dashboard/crypto/create-token-pool-modal';
 // import { getCHZBalance } from '@/actions/crypto/get-ballance';
@@ -29,6 +30,7 @@ import type { ProfileDto } from '@/types/dtos/profile-dto';
 
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 export type AppSidebarProps = {
   favorites: FavoriteDto[];
@@ -86,7 +88,18 @@ export function AppSidebar({
           /* Overriding the hardcoded { disply:table } to get full flex height */
           className="h-full  [&>[data-radix-scroll-area-viewport]>div]:!flex [&>[data-radix-scroll-area-viewport]>div]:h-full [&>[data-radix-scroll-area-viewport]>div]:flex-col"
         >
-          <div className="flex flex-row gap-2 ms-2 mt-2 mb-3">Team Pool</div>
+          <div className="flex flex-row gap-2 ms-2 mt-2 mb-3">
+            Team Fan Token Pool
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger asChild>
+                <InfoIcon className="hidden size-3 shrink-0 text-muted-foreground sm:inline" />
+              </TooltipTrigger>
+              <TooltipContent>
+                You can create a fan token pool for your team and stack your
+                tokens together.
+              </TooltipContent>
+            </Tooltip>
+          </div>
           {tokenPools &&
             tokenPools.length > 0 &&
             tokenPools.map((pool) => (
@@ -98,7 +111,7 @@ export function AppSidebar({
             className="mx-2 mb-2"
             onClick={handleCreatePool}
           >
-            Add token Pool
+            Add Fan Token Pool
           </Button>
 
           <div className="flex flex-row gap-2 ms-2 mt-2 mb-3">My tokens</div>
