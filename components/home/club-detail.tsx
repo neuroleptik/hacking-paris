@@ -85,6 +85,25 @@ export function ClubDetail({
               </Badge>
             </div>
           </div>
+          <div className="flex flex-row justify-between px-2">
+            <div>
+              <span className="flex items-center gap-2 mb-1">
+                <StackIcon className="w-4 h-4" />
+                <h2 className="font-semibold text-lg">Total staked</h2>
+              </span>
+              <Badge className="text-md font-medium">
+                {club.totalStaked} tokens
+              </Badge>
+            </div>
+            <div>
+              <span className="flex items-center gap-2 mb-1">
+                <h2 className="font-semibold text-lg">Symbol</h2>
+              </span>
+              <Badge className="text-md font-medium">
+                {club.symbol}
+              </Badge>
+            </div>
+          </div>
           <Badge className="text-sm bg-green-600/10 text-green-600 mt-3 mb-3 hover:bg-green-600/10 hover:text-green-500 hover:cursor-default">
             Help your club win the Club War by stacking tokens for the season
             and earn points and rewards for your club based on the number of

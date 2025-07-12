@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { TrophyIcon } from 'lucide-react';
-
-import { getClubs } from '@/actions/crypto/get-clubs';
 import {
   Card,
   CardContent,
@@ -17,109 +15,107 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '../ui/badge';
 import { ClubDetail } from './club-detail';
 
+// Interface pour les données retournées par l'API
+export interface ClubInfo {
+  token: string;
+  name: string;
+  symbol: string;
+  totalStaked: string;
+}
+
+// Interface pour l'affichage avec les données enrichies
 export interface Club {
   id: string;
   name: string;
   logo: string;
   totalPoints: number;
   symbol: string;
+  token: string;
+  totalStaked: string;
 }
 
-const clubs: Club[] = [
-  {
-    id: '1',
-    name: 'Paris Saint-Germain',
-    logo: '/clubs/psg.png',
-    totalPoints: 100,
-    symbol: 'PSG'
-  },
-  {
-    id: '2',
-    name: 'AC Milan',
-    logo: '/clubs/acm.png',
-    totalPoints: 600,
-    symbol: 'ACM'
-  },
-  {
-    id: '3',
-    name: 'Atletico de Madrid',
-    logo: '/clubs/atletico_de_madrid.png',
-    totalPoints: 500,
-    symbol: 'ATM'
-  },
-  {
-    id: '4',
-    name: 'Barcelona',
-    logo: '/clubs/barcelona.png',
-    totalPoints: 100,
-    symbol: 'BAR'
-  },
-  {
-    id: '5',
-    name: 'Manchester City',
-    logo: '/clubs/manchester_city.png',
-    totalPoints: 155,
-    symbol: 'MC'
-  },
-  {
-    id: '6',
-    name: 'AS Roma',
-    logo: '/clubs/as_roma.png',
-    totalPoints: 160,
-    symbol: 'ASR'
-  },
-  {
-    id: '7',
-    name: 'Inter Milan',
-    logo: '/clubs/inter_milan.png',
-    totalPoints: 170,
-    symbol: 'IM'
-  },
-  {
-    id: '8',
-    name: 'Napoli',
-    logo: '/clubs/napoli.png',
-    totalPoints: 180,
-    symbol: 'NAP'
-  },
-  {
-    id: '9',
-    name: 'Arsenal',
-    logo: '/clubs/arsenal.png',
-    totalPoints: 190,
-    symbol: 'ARS'
-  },
-  {
-    id: '10',
-    name: 'Juventus',
-    logo: '/clubs/juv.png',
-    totalPoints: 1050,
-    symbol: 'JUV'
-  },
-  {
-    id: '11',
-    name: 'Tottenham Hotspur',
-    logo: '/clubs/tottenham.png',
-    totalPoints: 200,
-    symbol: 'TOT'
-  }
-];
+// Mapping des symboles vers les logos
+const symbolToLogo: Record<string, string> = {
+  'PSG': '/clubs/psg.png',
+  'ACM': '/clubs/acm.png',
+  'ATM': '/clubs/atletico_de_madrid.png',
+  'BAR': '/clubs/barcelona.png',
+  'CITY': '/clubs/manchester_city.png',
+  'ASR': '/clubs/as_roma.png',
+  'IM': '/clubs/inter_milan.png',
+  'NAP': '/clubs/napoli.png',
+  'ARS': '/clubs/arsenal.png',
+  'JUV': '/clubs/juv.png',
+  'TOT': '/clubs/tottenham.png',
+};
+
+// Fonction pour convertir les données de l'API en format d'affichage
+function convertClubInfoToClub(clubInfo: ClubInfo, index: number): Club {
+  const logo = symbolToLogo[clubInfo.symbol] || '/clubs/default.png';
+  const totalPoints = parseFloat(clubInfo.totalStaked) * 1000; // Conversion pour l'affichage
+
+  return {
+    id: index.toString(),
+    name: clubInfo.name,
+    logo,
+    totalPoints: Math.round(totalPoints),
+    symbol: clubInfo.symbol,
+    token: clubInfo.token,
+    totalStaked: clubInfo.totalStaked
+  };
+}
 
 export function ClubList() {
   const [selectedClub, setSelectedClub] = useState<Club | null>(null);
   const [selectedRanking, setSelectedRanking] = useState<number>(1);
-  // const [clubs, setClubs] = useState<Club[]>([]);
+  const [clubs, setClubs] = useState<Club[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const fetchClubs = async () => {
-  //     const clubs = await getClubs();
-  //     console.log('clubs', clubs);
-  //     // setClubs(clubs as Club[]);
-  //   };
-  //   fetchClubs();
-  // }, []);
+    useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/clubs');
+        const { data } = await response.json();
+        console.log('clubs from API', data);
 
-  //
+        if (data?.length > 0) {
+          const convertedClubs = data.map((clubInfo: ClubInfo, index: number) =>
+            convertClubInfoToClub(clubInfo, index)
+          );
+          console.log('convertedClubs', convertedClubs);
+          setClubs(convertedClubs);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération des clubs:', error);
+        setClubs([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClubs();
+  }, []);
+
+  if (loading) {
+    return (
+      <Card className="w-full p-5 m-5 w-2/3 mx-auto">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrophyIcon className="w-6 h-6" /> Clubs Ranking
+          </CardTitle>
+          <CardDescription>
+            Chargement des clubs...
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center p-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="w-full p-5 m-5 w-2/3 mx-auto">
@@ -128,16 +124,19 @@ export function ClubList() {
           <TrophyIcon className="w-6 h-6" /> Clubs Ranking
         </CardTitle>
         <CardDescription>
-          Clubs ranking based on the number of members transactions
+          Clubs ranking based on total staked tokens
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4 ">
-          {clubs
-            .sort((a, b) => b.totalPoints - a.totalPoints)
-            .map((club, index) => (
+        {clubs.length === 0 ? (
+          <div className="flex items-center justify-center p-8">
+            <p className="text-muted-foreground">Aucun club disponible</p>
+          </div>
+        ) : (
+          <div className="space-y-4 ">
+            {clubs.map((club, index) => (
               <Card
-                key={club.id}
+                key={club.symbol}
                 className="flex items-center space-x-4 p-4 cursor-pointer hover:bg-accent/50 transition-colors"
                 onClick={() => {
                   setSelectedClub(club);
@@ -161,11 +160,18 @@ export function ClubList() {
                 </div>
                 <div className="flex-1 pe-5">
                   <h3 className="font-semibold">{club.name}</h3>
+                  <p className="text-sm text-muted-foreground">{club.symbol}</p>
                 </div>
-                <div className="text-md">{club.totalPoints} points</div>
+                <div className="text-md">
+                  <div className="font-semibold">{club.totalPoints} points</div>
+                  <div className="text-sm text-muted-foreground">
+                    {club.totalStaked} staked
+                  </div>
+                </div>
               </Card>
             ))}
-        </div>
+          </div>
+        )}
       </CardContent>
       <ClubDetail
         club={selectedClub}
