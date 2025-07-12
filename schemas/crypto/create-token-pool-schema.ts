@@ -18,4 +18,4 @@ export const createTokenPoolSchema = z.object({
     .max(1000000, 'Maximum amount is 1,000,000')
 });
 
-export type CreateTokenPoolSchema = z.infer<typeof createTokenPoolSchema>; 
+export type CreateTokenPoolSchema = z.infer<typeof createTokenPoolSchema>;

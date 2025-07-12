@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
+import { RefreshCwIcon, XIcon } from 'lucide-react';
+
 import { Badge } from '@/components/ui/badge';
-import { XIcon, RefreshCwIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface DebugLog {
   timestamp: string;
@@ -38,14 +39,18 @@ export function DebugPanel() {
     };
   }, []);
 
-  const addLog = (type: 'info' | 'success' | 'error', message: string, data?: any) => {
+  const addLog = (
+    type: 'info' | 'success' | 'error',
+    message: string,
+    data?: any
+  ) => {
     const newLog: DebugLog = {
       timestamp: new Date().toLocaleTimeString(),
       type,
       message,
       data
     };
-    setLogs(prev => [...prev.slice(-9), newLog]); // Garder seulement les 10 derniers logs
+    setLogs((prev) => [...prev.slice(-9), newLog]); // Garder seulement les 10 derniers logs
   };
 
   const clearLogs = () => {
@@ -91,15 +96,32 @@ export function DebugPanel() {
       <CardContent className="pt-0">
         <div className="space-y-1 max-h-32 overflow-y-auto">
           {logs.map((log, index) => (
-            <div key={index} className="text-xs">
+            <div
+              key={index}
+              className="text-xs"
+            >
               <div className="flex items-center gap-2">
                 <Badge
-                  variant={log.type === 'error' ? 'destructive' : log.type === 'success' ? 'default' : 'secondary'}
+                  variant={
+                    log.type === 'error'
+                      ? 'destructive'
+                      : log.type === 'success'
+                        ? 'default'
+                        : 'secondary'
+                  }
                   className="text-xs"
                 >
                   {log.timestamp}
                 </Badge>
-                <span className={log.type === 'error' ? 'text-red-500' : log.type === 'success' ? 'text-green-500' : 'text-blue-500'}>
+                <span
+                  className={
+                    log.type === 'error'
+                      ? 'text-red-500'
+                      : log.type === 'success'
+                        ? 'text-green-500'
+                        : 'text-blue-500'
+                  }
+                >
                   {log.message}
                 </span>
               </div>

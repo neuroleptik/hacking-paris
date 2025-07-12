@@ -2,12 +2,12 @@
 
 import * as React from 'react';
 import Image from 'next/image';
+import { RefreshCw } from 'lucide-react';
 
 import { getClubs } from '@/actions/crypto/get-clubs';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTotalStaked } from '@/hooks/use-total-staked';
-import { Button } from '@/components/ui/button';
-import { RefreshCw } from 'lucide-react';
 
 interface TokensComponentProps {
   allTokensBalance: {
@@ -33,7 +33,12 @@ export function TokensComponent({
   const [conversionRates, setConversionRates] = React.useState<ConversionRates>(
     {}
   );
-  const { data: totalStakedData, loading: totalStakedLoading, error: totalStakedError, refresh: refreshTotalStaked } = useTotalStaked();
+  const {
+    data: totalStakedData,
+    loading: totalStakedLoading,
+    error: totalStakedError,
+    refresh: refreshTotalStaked
+  } = useTotalStaked();
 
   console.log('stakedTokensBalance', stakedTokensBalance);
   console.log('totalStakedData', totalStakedData);

@@ -78,7 +78,7 @@ export const join = actionClient
     return await signIn(IdentityProvider.Credentials, {
       email: parsedInput.email,
       password: parsedInput.password,
-      redirect: true,
+      redirect: true
       // redirectTo: Routes.Onboarding
     });
   });

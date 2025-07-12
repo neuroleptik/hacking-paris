@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface TotalStakedData {
   totalStaked: string;
@@ -23,7 +23,9 @@ export function useTotalStaked() {
       if (response.ok) {
         setData(result);
       } else {
-        setError(result.error || 'Erreur lors de la récupération du total staké');
+        setError(
+          result.error || 'Erreur lors de la récupération du total staké'
+        );
       }
     } catch (err) {
       setError('Erreur de connexion');

@@ -108,7 +108,7 @@ export const providers = [
       walletAddress: { label: 'Wallet Address', type: 'text' }
     },
     async authorize(credentials) {
-      console.log("Authorizing wallet");
+      console.log('Authorizing wallet');
       console.log(credentials);
       if (!credentials?.walletAddress) {
         throw new InternalServerError();
@@ -123,7 +123,7 @@ export const providers = [
           name: true
         }
       });
-      console.log("User found", user);
+      console.log('User found', user);
       if (!user) {
         throw new InternalServerError();
       }

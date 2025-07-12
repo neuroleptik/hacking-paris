@@ -2,13 +2,13 @@ import {
   BellIcon,
   CodeIcon,
   CreditCardIcon,
-  Volleyball,
   LockKeyholeIcon,
   SettingsIcon,
   StoreIcon,
   UserIcon,
   UserPlus2Icon,
-  UsersIcon
+  UsersIcon,
+  Volleyball
 } from 'lucide-react';
 
 import { Routes } from '@/constants/routes';

@@ -1,10 +1,11 @@
 'use server';
 
 import { ethers } from 'ethers';
-import { prisma } from '@/lib/db/prisma';
+
 import { Routes } from '@/constants/routes';
-import { IdentityProvider } from '@/types/identity-provider';
 import { signIn } from '@/lib/auth';
+import { prisma } from '@/lib/db/prisma';
+import { IdentityProvider } from '@/types/identity-provider';
 
 const nonces = new Map<string, string>();
 
@@ -17,11 +18,16 @@ export async function getNonce(address: string): Promise<string> {
 
 export async function verifySignature({
   address,
-  signature,
+  signature
 }: {
   address: string;
   signature: string;
-}): Promise<{ success: boolean; error?: string; shouldRedirect?: boolean; step?: number }> {
+}): Promise<{
+  success: boolean;
+  error?: string;
+  shouldRedirect?: boolean;
+  step?: number;
+}> {
   const nonce = nonces.get(address.toLowerCase());
   if (!nonce) {
     return { success: false, error: 'Nonce not found or expired' };
@@ -33,7 +39,7 @@ export async function verifySignature({
       return { success: false, error: 'Invalid signature' };
     }
 
-    console.log("Adress verified successfully");
+    console.log('Adress verified successfully');
 
     nonces.delete(address.toLowerCase());
 
@@ -45,61 +51,58 @@ export async function verifySignature({
     });
 
     if (user) {
-      if(user.email && user.emailVerified){
-         await signIn(IdentityProvider.Wallet, {
-        walletAddress: address,
-        redirect: false
-      });
-      console.log("User already exists");
+      if (user.email && user.emailVerified) {
+        await signIn(IdentityProvider.Wallet, {
+          walletAddress: address,
+          redirect: false
+        });
+        console.log('User already exists');
         // redirect to dashboard
         // redirect(Routes.Dashboard);
         return { success: true, shouldRedirect: true };
-      }
-      else{
-        if(user.email && !user.emailVerified){
-           await signIn(IdentityProvider.Wallet, {
-        walletAddress: address,
-        redirect: false
-      });
-      console.log("User already exists 2");
+      } else {
+        if (user.email && !user.emailVerified) {
+          await signIn(IdentityProvider.Wallet, {
+            walletAddress: address,
+            redirect: false
+          });
+          console.log('User already exists 2');
           // redirect to email verification
           return { success: true, step: 2 };
-        }
-        else{
-          if(!user.email && !user.emailVerified){// redirect to profile completion
-             await signIn(IdentityProvider.Wallet, {
-        walletAddress: address,
-        redirect: false
-        });
-      console.log("User already exists 3");
+        } else {
+          if (!user.email && !user.emailVerified) {
+            // redirect to profile completion
+            await signIn(IdentityProvider.Wallet, {
+              walletAddress: address,
+              redirect: false
+            });
+            console.log('User already exists 3');
             return { success: true, step: 1 };
           }
         }
       }
-    }
-    else{
-      //create user 
+    } else {
+      //create user
       // create the organization
       const organization = await prisma.organization.create({
         data: {
-          name: "Default Organization",
-          stripeCustomerId: "cus_1234567890",
-          completedOnboarding: true,
-          
+          name: 'Default Organization',
+          stripeCustomerId: 'cus_1234567890',
+          completedOnboarding: true
         }
       });
       await prisma.user.create({
         data: {
           walletAddress: address.toLowerCase(),
           organizationId: organization.id,
-          name: "Default User",
-          email: "default@example.com",
+          name: 'Default User',
+          email: 'default@example.com',
           emailVerified: new Date()
         }
       });
-      
+
       // connect user to session
-      console.log("Creating user and connecting to session");
+      console.log('Creating user and connecting to session');
       console.log(address);
 
       await signIn(IdentityProvider.Wallet, {
@@ -108,11 +111,9 @@ export async function verifySignature({
       });
       return { success: true, shouldRedirect: true };
     }
-
   } catch (error) {
     console.log(error);
-    console.log("Verification failed");
+    console.log('Verification failed');
     return { success: false, error: 'Verification failed' };
   }
 }
-

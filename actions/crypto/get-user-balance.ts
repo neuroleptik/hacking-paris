@@ -1,19 +1,21 @@
-import { ethers } from "ethers";
-import { authActionClient } from "../safe-action";
-import { prisma } from "@/lib/db/prisma";
-import { NotFoundError } from "@/lib/validation/exceptions";
-import type { Session } from "next-auth";
-import { z } from "zod";
+import { ethers } from 'ethers';
+import type { Session } from 'next-auth';
+import { z } from 'zod';
+
+import { prisma } from '@/lib/db/prisma';
+import { NotFoundError } from '@/lib/validation/exceptions';
+
+import { authActionClient } from '../safe-action';
 
 const getUserBalanceSchema = z.object({
-  tokenAddress: z.string().min(1, "Adresse du token requise"),
+  tokenAddress: z.string().min(1, 'Adresse du token requise')
 });
 
 const erc20Abi = [
   'function balanceOf(address owner) view returns (uint256)',
   'function name() view returns (string)',
   'function decimals() view returns (uint8)',
-  'function symbol() view returns (string)',
+  'function symbol() view returns (string)'
 ];
 
 const getTokenBalance = async (address: string, contractAddress: string) => {
@@ -43,37 +45,48 @@ const getTokenBalance = async (address: string, contractAddress: string) => {
 export const getUserBalance = authActionClient
   .metadata({ actionName: 'getUserBalance' })
   .schema(getUserBalanceSchema)
-  .action(async ({ parsedInput, ctx: { session } }: {
-    parsedInput: z.infer<typeof getUserBalanceSchema>;
-    ctx: { session: Session | null };
-  }) => {
-    if (!session?.user?.id) {
-      throw new NotFoundError('Session utilisateur introuvable');
-    }
-
-    try {
-      // Récupérer l'adresse du wallet de l'utilisateur
-      const user = await prisma.user.findFirst({
-        where: { id: session.user.id },
-        select: { walletAddress: true }
-      });
-
-      if (!user || !user.walletAddress) {
-        throw new NotFoundError('Adresse du wallet non trouvée pour cet utilisateur');
+  .action(
+    async ({
+      parsedInput,
+      ctx: { session }
+    }: {
+      parsedInput: z.infer<typeof getUserBalanceSchema>;
+      ctx: { session: Session | null };
+    }) => {
+      if (!session?.user?.id) {
+        throw new NotFoundError('Session utilisateur introuvable');
       }
 
-      const result = await getTokenBalance(user.walletAddress, parsedInput.tokenAddress);
+      try {
+        // Récupérer l'adresse du wallet de l'utilisateur
+        const user = await prisma.user.findFirst({
+          where: { id: session.user.id },
+          select: { walletAddress: true }
+        });
 
-      return {
-        balance: result.balance,
-        rawBalance: result.rawBalance,
-        decimals: result.decimals,
-        name: result.name,
-        symbol: result.symbol
-      };
+        if (!user || !user.walletAddress) {
+          throw new NotFoundError(
+            'Adresse du wallet non trouvée pour cet utilisateur'
+          );
+        }
 
-    } catch (error) {
-      console.error('Erreur lors de la récupération du solde:', error);
-      throw new Error(`Impossible de récupérer le solde: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
+        const result = await getTokenBalance(
+          user.walletAddress,
+          parsedInput.tokenAddress
+        );
+
+        return {
+          balance: result.balance,
+          rawBalance: result.rawBalance,
+          decimals: result.decimals,
+          name: result.name,
+          symbol: result.symbol
+        };
+      } catch (error) {
+        console.error('Erreur lors de la récupération du solde:', error);
+        throw new Error(
+          `Impossible de récupérer le solde: ${error instanceof Error ? error.message : 'Erreur inconnue'}`
+        );
+      }
     }
-  });
+  );
