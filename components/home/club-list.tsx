@@ -1,6 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
+import { TrophyIcon } from 'lucide-react';
 
 import {
   Card,
@@ -11,7 +13,10 @@ import {
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-interface Club {
+import { Badge } from '../ui/badge';
+import { ClubDetail } from './club-detail';
+
+export interface Club {
   id: string;
   name: string;
   logo: string;
@@ -88,41 +93,61 @@ const clubs: Club[] = [
 ];
 
 export function ClubList() {
+  const [selectedClub, setSelectedClub] = useState<Club | null>(null);
+  const [selectedRanking, setSelectedRanking] = useState<number>(1);
+
   return (
-    <Card className="w-full p-5 m-5">
+    <Card className="w-full p-5 m-5 w-2/3 mx-auto">
       <CardHeader>
-        <CardTitle>Clubs Ranking</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <TrophyIcon className="w-6 h-6" /> Clubs Ranking
+        </CardTitle>
         <CardDescription>
           Clubs ranking based on the number of members transactions
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-4 ">
           {clubs
             .sort((a, b) => b.totalPoints - a.totalPoints)
-            .map((club) => (
+            .map((club, index) => (
               <Card
                 key={club.id}
-                className="flex items-center space-x-4 p-4"
+                className="flex items-center space-x-4 p-4 cursor-pointer hover:bg-accent/50 transition-colors"
+                onClick={() => {
+                  setSelectedClub(club);
+                  setSelectedRanking(index);
+                }}
               >
-                <div className="relative h-8 w-8">
-                  <Image
-                    src={club.logo}
-                    alt={`Logo ${club.name}`}
-                    fill
-                    className="object-contain"
-                  />
+                <div className="flex items-center space-x-4">
+                  <Badge
+                    className={`${index === 0 ? 'bg-green-500' : 'bg-gray-500'}`}
+                  >
+                    {index + 1}
+                  </Badge>
+                  <div className="relative h-8 w-8">
+                    <Image
+                      src={club.logo}
+                      alt={`Logo ${club.name}`}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 pe-5">
                   <h3 className="font-semibold">{club.name}</h3>
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  {club.totalPoints} points
-                </div>
+                <div className="text-md">{club.totalPoints} points</div>
               </Card>
             ))}
         </div>
       </CardContent>
+      <ClubDetail
+        club={selectedClub}
+        ranking={selectedRanking}
+        isOpen={selectedClub !== null}
+        onClose={() => setSelectedClub(null)}
+      />
     </Card>
   );
 }

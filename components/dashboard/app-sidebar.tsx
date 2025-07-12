@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 
 import { getCHZBalance } from '@/actions/crypto/get-ballance';
 import { NavFavorites } from '@/components/dashboard/nav-favorites';
@@ -22,6 +23,8 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 import { cn } from '@/lib/utils';
 import type { FavoriteDto } from '@/types/dtos/favorite-dto';
 import type { ProfileDto } from '@/types/dtos/profile-dto';
+
+import { Badge } from '../ui/badge';
 
 export type AppSidebarProps = {
   favorites: FavoriteDto[];
@@ -69,9 +72,16 @@ export function AppSidebar({
           /* Overriding the hardcoded { disply:table } to get full flex height */
           className="h-full [&>[data-radix-scroll-area-viewport]>div]:!flex [&>[data-radix-scroll-area-viewport]>div]:h-full [&>[data-radix-scroll-area-viewport]>div]:flex-col"
         >
-          <div className="text-sm text-muted-foreground ms-4">
-            <span className="text-primary">{chzBalance}</span> CHZ
-          </div>
+          <Badge className="text-md text-muted-foreground mx-1 bg-green-500/10 text-green-500 hover:bg-green-500/10 hover:text-green-500 hover:cursor-default gap-1">
+            <Image
+              src="/chiliz.png"
+              alt="CHZ"
+              width={20}
+              height={20}
+              className="ml-1"
+            />
+            <span className="text-primary ml-1">{chzBalance}</span> CHZ
+          </Badge>
           <NavMain />
           <NavFavorites favorites={favorites} />
           <NavSupport

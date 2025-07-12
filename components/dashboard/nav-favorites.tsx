@@ -157,9 +157,7 @@ export function NavFavorites({
                 </SortableContext>
               </DndContext>
             ) : (
-              <EmptyText className="ml-3 text-xs group-data-[collapsible=icon]:hidden">
-                No items added.
-              </EmptyText>
+              <></>
             )}
           </SidebarGroupContent>
         </CollapsibleContent>
