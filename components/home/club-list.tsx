@@ -12,6 +12,7 @@ import {
   CardTitle
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useTokens } from '@/lib/providers/tokens-provider';
 
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -19,6 +20,7 @@ import { ClubDetail } from './club-detail';
 import { DebugPanel } from './debug-panel';
 import { RewardsDialog } from './rewards-dialog';
 import { StakeModal } from './stake-modal';
+import { TokensComponent } from './tokens-component';
 
 // Interface pour les données retournées par l'API
 export interface ClubInfo {
@@ -112,6 +114,9 @@ export function ClubList() {
     fetchClubs();
   }, []);
 
+  const { tokens, tokenPools } = useTokens();
+  console.log('initialTokens', tokens);
+
   const handleClubClick = (club: Club, index: number) => {
     setSelectedClub(club);
     setSelectedRanking(index);
@@ -148,101 +153,113 @@ export function ClubList() {
   }
 
   return (
-    <Card className="w-full p-5 m-5 w-2/3 mx-auto">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <TrophyIcon className="w-6 h-6" /> Clubs Ranking
-        </CardTitle>
-        <CardDescription>
-          Clubs ranking based on total staked tokens
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        {clubs.length === 0 ? (
-          <div className="flex items-center justify-center p-8">
-            <p className="text-muted-foreground">Aucun club disponible</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {clubs.map((club, index) => (
-              <Card
-                key={club.symbol}
-                className="flex items-center space-x-4 p-4 cursor-pointer hover:bg-accent/50 transition-colors"
-                onClick={() => handleClubClick(club, index)}
-              >
-                <div className="flex items-center space-x-4">
-                  <Badge
-                    className={`${index === 0 ? 'bg-green-500' : 'bg-gray-500'}`}
-                  >
-                    {index + 1}
-                  </Badge>
-                  <div className="relative h-8 w-8">
-                    <Image
-                      src={club.logo}
-                      alt={`Logo ${club.name}`}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-                <div className="flex-1 pe-5">
-                  <h3 className="font-semibold">{club.name}</h3>
-                  <p className="text-sm text-muted-foreground">{club.symbol}</p>
-                </div>
-                <div className="text-md">
-                  <div className="font-semibold">{club.totalPoints} points</div>
-                  <div className="text-sm text-muted-foreground">
-                    {club.totalStaked} staked
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={(e) => handleStakeClick(e, club)}
-                  >
-                    Staker
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={(e) => handleRewardsClick(e, club)}
-                  >
-                    <GiftIcon className="w-4 h-4 mr-1" />
-                    Rewards
-                  </Button>
-                </div>
-              </Card>
-            ))}
-          </div>
-        )}
-      </CardContent>
-      <ClubDetail
-        club={selectedClub}
-        ranking={selectedRanking}
-        isOpen={selectedClub !== null}
-        onClose={() => setSelectedClub(null)}
-      />
-      <StakeModal
-        club={selectedClubForStaking}
-        isOpen={stakeModalOpen}
-        onClose={() => {
-          setStakeModalOpen(false);
-          setSelectedClubForStaking(null);
-        }}
-      />
-      {selectedClubForRewards && (
-        <RewardsDialog
-          isOpen={rewardsModalOpen}
-          onClose={() => {
-            setRewardsModalOpen(false);
-            setSelectedClubForRewards(null);
-          }}
-          clubName={selectedClubForRewards.name}
-          totalStaked={Number(selectedClubForRewards.totalStaked)}
+    <>
+      {tokens && (
+        <TokensComponent
+          allTokensBalance={tokens}
+          stakedTokensBalance={tokenPools}
         />
       )}
-      <DebugPanel />
-    </Card>
+      <Card className="w-full p-5 m-5 w-2/3 mx-auto">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrophyIcon className="w-6 h-6" /> Clubs Ranking
+          </CardTitle>
+          <CardDescription>
+            Clubs ranking based on total staked tokens
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {clubs.length === 0 ? (
+            <div className="flex items-center justify-center p-8">
+              <p className="text-muted-foreground">Aucun club disponible</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {clubs.map((club, index) => (
+                <Card
+                  key={club.symbol}
+                  className="flex items-center space-x-4 p-4 cursor-pointer hover:bg-accent/50 transition-colors"
+                  onClick={() => handleClubClick(club, index)}
+                >
+                  <div className="flex items-center space-x-4">
+                    <Badge
+                      className={`${index === 0 ? 'bg-green-500' : 'bg-gray-500'}`}
+                    >
+                      {index + 1}
+                    </Badge>
+                    <div className="relative h-8 w-8">
+                      <Image
+                        src={club.logo}
+                        alt={`Logo ${club.name}`}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex-1 pe-5">
+                    <h3 className="font-semibold">{club.name}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {club.symbol}
+                    </p>
+                  </div>
+                  <div className="text-md">
+                    <div className="font-semibold">
+                      {club.totalPoints} points
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {club.totalStaked} staked
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => handleStakeClick(e, club)}
+                    >
+                      Staker
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => handleRewardsClick(e, club)}
+                    >
+                      <GiftIcon className="w-4 h-4 mr-1" />
+                      Rewards
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </CardContent>
+        <ClubDetail
+          club={selectedClub}
+          ranking={selectedRanking}
+          isOpen={selectedClub !== null}
+          onClose={() => setSelectedClub(null)}
+        />
+        <StakeModal
+          club={selectedClubForStaking}
+          isOpen={stakeModalOpen}
+          onClose={() => {
+            setStakeModalOpen(false);
+            setSelectedClubForStaking(null);
+          }}
+        />
+        {selectedClubForRewards && (
+          <RewardsDialog
+            isOpen={rewardsModalOpen}
+            onClose={() => {
+              setRewardsModalOpen(false);
+              setSelectedClubForRewards(null);
+            }}
+            clubName={selectedClubForRewards.name}
+            totalStaked={Number(selectedClubForRewards.totalStaked)}
+          />
+        )}
+        <DebugPanel />
+      </Card>
+    </>
   );
 }

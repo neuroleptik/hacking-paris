@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { InfoIcon } from 'lucide-react';
 
+import { getAllTokensBalance } from '@/actions/crypto/get-ballance';
 import { getClubs } from '@/actions/crypto/get-clubs';
 import { HomeFilters } from '@/components/dashboard/home/home-filters';
 import { HomeSpinner } from '@/components/dashboard/home/home-spinner';
 import { ClubList } from '@/components/home/club-list';
+import { TokensComponent } from '@/components/home/tokens-component';
 import { XIcon } from '@/components/ui/brand-icons';
 import { buttonVariants } from '@/components/ui/button';
 import {
@@ -25,6 +27,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { TransitionProvider } from '@/hooks/use-transition-context';
+import { useTokens } from '@/lib/providers/tokens-provider';
 import { createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {

@@ -114,26 +114,6 @@ export function AppSidebar({
             Add Fan Token Pool
           </Button>
 
-          <div className="flex flex-row gap-2 ms-2 mt-2 mb-3">My tokens</div>
-          {allTokensBalance.map((token) => (
-            <Badge className="text-md text-muted-foreground mx-1 bg-green-500/10 text-green-500 hover:bg-green-500/10 hover:text-green-500 hover:cursor-default gap-1 mb-2">
-              <Image
-                src={
-                  token.symbol === 'CHZ'
-                    ? '/chiliz.png'
-                    : `/clubs/${token.symbol.toLowerCase()}.png`
-                }
-                alt={token.symbol}
-                width={20}
-                height={20}
-                className="ml-1"
-              />
-
-              <span className="text-primary ml-1">
-                {token.balance} {token.symbol}
-              </span>
-            </Badge>
-          ))}
           <NavMain />
           <NavFavorites favorites={favorites} />
           <NavSupport
