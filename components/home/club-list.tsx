@@ -13,7 +13,10 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
 import { ClubDetail } from './club-detail';
+import { StakeModal } from './stake-modal';
+import { DebugPanel } from './debug-panel';
 
 // Interface pour les données retournées par l'API
 export interface ClubInfo {
@@ -70,6 +73,8 @@ export function ClubList() {
   const [selectedRanking, setSelectedRanking] = useState<number>(1);
   const [clubs, setClubs] = useState<Club[]>([]);
   const [loading, setLoading] = useState(true);
+  const [stakeModalOpen, setStakeModalOpen] = useState(false);
+  const [selectedClubForStaking, setSelectedClubForStaking] = useState<Club | null>(null);
 
     useEffect(() => {
     const fetchClubs = async () => {
@@ -79,12 +84,15 @@ export function ClubList() {
         const { data } = await response.json();
         console.log('clubs from API', data);
 
-        if (data?.length > 0) {
-          const convertedClubs = data.map((clubInfo: ClubInfo, index: number) =>
+        if (data?.data?.length > 0) {
+          const convertedClubs = data.data.map((clubInfo: ClubInfo, index: number) =>
             convertClubInfoToClub(clubInfo, index)
           );
           console.log('convertedClubs', convertedClubs);
           setClubs(convertedClubs);
+        } else {
+          console.log('Aucun club trouvé ou données vides');
+          setClubs([]);
         }
       } catch (error) {
         console.error('Erreur lors de la récupération des clubs:', error);
@@ -168,6 +176,17 @@ export function ClubList() {
                     {club.totalStaked} staked
                   </div>
                 </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={(e: React.MouseEvent) => {
+                    e.stopPropagation();
+                    setSelectedClubForStaking(club);
+                    setStakeModalOpen(true);
+                  }}
+                >
+                  Staker
+                </Button>
               </Card>
             ))}
           </div>
@@ -179,6 +198,15 @@ export function ClubList() {
         isOpen={selectedClub !== null}
         onClose={() => setSelectedClub(null)}
       />
+      <StakeModal
+        club={selectedClubForStaking}
+        isOpen={stakeModalOpen}
+        onClose={() => {
+          setStakeModalOpen(false);
+          setSelectedClubForStaking(null);
+        }}
+      />
+      <DebugPanel />
     </Card>
   );
 }

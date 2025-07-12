@@ -2,7 +2,8 @@ import { ethers } from "ethers";
 import { authActionClient } from "../safe-action";
 import { prisma } from "@/lib/db/prisma";
 import { NotFoundError } from "@/lib/validation/exceptions";
-  import { TatumSDK, Network, Chiliz } from '@tatumio/tatum'
+import { TatumSDK, Network, Chiliz } from '@tatumio/tatum'
+import type { Session } from "next-auth";
 
 
 
@@ -50,7 +51,7 @@ const getFanTokenBalance = async (address: string, contractAddress: string) => {
 
 export const getAllTokensBalance = authActionClient
   .metadata({ actionName: 'getCHZBalance' })
-  .action(async ({ ctx: { session } }) => {
+  .action(async ({ ctx: { session } }: { ctx: { session: Session | null } }) => {
     if (!session?.user?.id) {
       throw new NotFoundError('Session utilisateur introuvable');
     }
@@ -99,6 +100,6 @@ export const getAllTokensBalance = authActionClient
       throw new Error('Impossible de récupérer la balance CHZ');
     }
   });
-  
+
 
 

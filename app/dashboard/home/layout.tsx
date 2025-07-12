@@ -42,8 +42,6 @@ export default async function HomeLayout({
   mostVisitedContacts,
   leastVisitedContacts
 }: HomeLayoutProps): Promise<React.JSX.Element> {
-  const clubs = await getClubs();
-  console.log('clubs', clubs);
   return (
     <TransitionProvider>
       <Page>
