@@ -1,25 +1,19 @@
-import * as React from 'react';
+import CTA from './components/cta';
+import { FrequentlyAskedQuestions } from './components/faq';
+import { Features } from './components/features';
+import { Hero } from './components/hero';
+import { SpotlightLogoCloud } from './components/logos-cloud';
+import { Rewards } from './components/rewards';
 
-import { CTA } from '@/components/marketing/sections/cta';
-import { FAQ } from '@/components/marketing/sections/faq';
-import { Hero } from '@/components/marketing/sections/hero';
-import { Logos } from '@/components/marketing/sections/logos';
-import { Problem } from '@/components/marketing/sections/problem';
-import { Solution } from '@/components/marketing/sections/solution';
-import { Stats } from '@/components/marketing/sections/stats';
-import { Testimonials } from '@/components/marketing/sections/testimonials';
-
-export default function IndexPage(): React.JSX.Element {
+export default function Home() {
   return (
-    <>
+    <div>
       <Hero />
-      <Logos />
-      <Problem />
-      <Solution />
-      <Stats />
-      <Testimonials />
-      <FAQ />
+      <SpotlightLogoCloud />
+      <Rewards />
+      <Features />
+      <FrequentlyAskedQuestions />
       <CTA />
-    </>
+    </div>
   );
 }

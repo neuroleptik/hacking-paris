@@ -1,18 +1,36 @@
-import * as React from 'react';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
-import { Footer } from '@/components/marketing/footer';
-import { CookieBanner } from '@/components/marketing/fragments/cookie-banner';
-import { Navbar } from '@/components/marketing/navbar';
+import '../../app/globals.css';
 
-export default function MarketingLayout(
-  props: React.PropsWithChildren
-): React.JSX.Element {
+import { cn } from '@/lib/utils';
+
+import { Footer } from './components/footer';
+import { Navbar } from './components/navbar';
+
+const inter = Inter({ subsets: ['latin'] });
+
+export const metadata: Metadata = {
+  title: 'War Club - Ultimate Fan Loyalty Platform',
+  description:
+    'Stack tokens with fellow fans to power your club to victory. Compete in global rankings, join organizations, and unlock exclusive rewards on the Chiliz blockchain.'
+};
+
+export default function RootLayout({
+  children
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <div>
-      <Navbar />
-      {props.children}
-      <Footer />
-      <CookieBanner />
-    </div>
+    <html
+      lang="en"
+      suppressHydrationWarning
+    >
+      <body className={cn('bg-black antialiased', inter.className)}>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
+    </html>
   );
 }
