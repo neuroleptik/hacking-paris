@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useTokens } from '@/lib/providers/tokens-provider';
+import { useTotalStaked } from '@/hooks/use-total-staked';
 
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -115,6 +116,7 @@ export function ClubList() {
   }, []);
 
   const { tokens, tokenPools } = useTokens();
+  const { refresh: refreshTotalStaked } = useTotalStaked();
   console.log('initialTokens', tokens);
 
   const handleClubClick = (club: Club, index: number) => {
@@ -158,6 +160,7 @@ export function ClubList() {
         <TokensComponent
           allTokensBalance={tokens}
           stakedTokensBalance={tokenPools}
+          onRefresh={refreshTotalStaked}
         />
       )}
       <Card className="w-full p-5 m-5 w-2/3 mx-auto">
@@ -245,6 +248,9 @@ export function ClubList() {
           onClose={() => {
             setStakeModalOpen(false);
             setSelectedClubForStaking(null);
+          }}
+          onStakeSuccess={() => {
+            refreshTotalStaked();
           }}
         />
         {selectedClubForRewards && (

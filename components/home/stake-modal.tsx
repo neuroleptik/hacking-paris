@@ -34,9 +34,10 @@ interface StakeModalProps {
   } | null;
   isOpen: boolean;
   onClose: () => void;
+  onStakeSuccess?: () => void;
 }
 
-export function StakeModal({ club, isOpen, onClose }: StakeModalProps) {
+export function StakeModal({ club, isOpen, onClose, onStakeSuccess }: StakeModalProps) {
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [userBalance, setUserBalance] = useState('0');
@@ -121,6 +122,11 @@ export function StakeModal({ club, isOpen, onClose }: StakeModalProps) {
 
         onClose();
         setAmount('');
+
+        // Call the refresh callback if provided
+        if (onStakeSuccess) {
+          onStakeSuccess();
+        }
       } else {
         const errorMessage = result.error || "Erreur lors du staking";
         toast.error(errorMessage);

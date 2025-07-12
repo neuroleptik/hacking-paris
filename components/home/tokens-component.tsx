@@ -5,6 +5,9 @@ import Image from 'next/image';
 
 import { getClubs } from '@/actions/crypto/get-clubs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTotalStaked } from '@/hooks/use-total-staked';
+import { Button } from '@/components/ui/button';
+import { RefreshCw } from 'lucide-react';
 
 interface TokensComponentProps {
   allTokensBalance: {
@@ -15,6 +18,7 @@ interface TokensComponentProps {
     balance: string;
     symbol: string;
   }[];
+  onRefresh?: () => void;
 }
 
 interface ConversionRates {
@@ -23,13 +27,16 @@ interface ConversionRates {
 
 export function TokensComponent({
   allTokensBalance,
-  stakedTokensBalance
+  stakedTokensBalance,
+  onRefresh
 }: TokensComponentProps): React.JSX.Element {
   const [conversionRates, setConversionRates] = React.useState<ConversionRates>(
     {}
   );
+  const { data: totalStakedData, loading: totalStakedLoading, error: totalStakedError, refresh: refreshTotalStaked } = useTotalStaked();
 
   console.log('stakedTokensBalance', stakedTokensBalance);
+  console.log('totalStakedData', totalStakedData);
 
   React.useEffect(() => {
     const fetchConversionRates = async () => {
@@ -108,7 +115,7 @@ export function TokensComponent({
         </CardContent>
       </Card>
       <div className="flex flex-col gap-4 w-1/2">
-        <Card className="w-full">
+        <Card className="w-full h-full">
           <CardHeader>
             <CardTitle>Total Value of My Wallet</CardTitle>
           </CardHeader>
@@ -123,16 +130,29 @@ export function TokensComponent({
             </div>
           </CardContent>
         </Card>
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle>Total Staked Value</CardTitle>
+        <Card className="w-full h-full">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Total Staked tokens</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col items-center justify-center h-full">
-              <span className="text-3xl font-bold">??€</span>
-              <span className="text-muted-foreground mt-2">
-                Total value of staked tokens
-              </span>
+              {totalStakedError ? (
+                <div className="text-center">
+                  <span className="text-lg font-bold text-red-500">Error</span>
+                  <span className="text-sm text-muted-foreground mt-1 block">
+                    {totalStakedError}
+                  </span>
+                </div>
+              ) : (
+                <>
+                  <span className="text-3xl font-bold">
+                    {totalStakedData?.data?.totalStaked || '0'}
+                  </span>
+                  <span className="text-muted-foreground mt-2">
+                    Total value of staked tokens
+                  </span>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
