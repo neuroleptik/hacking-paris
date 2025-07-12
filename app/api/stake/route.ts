@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { stakeTokens } from '@/actions/crypto/stake-tokens';
 import { serializeBigInts } from '@/lib/utils/bigint-utils';
 

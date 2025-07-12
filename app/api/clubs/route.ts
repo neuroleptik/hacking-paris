@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { getClubs } from '@/actions/crypto/get-clubs';
 import { serializeBigInts } from '@/lib/utils/bigint-utils';
 

@@ -19,7 +19,7 @@ export const signUpSchema = z.object({
     .trim()
     .min(1, 'Email is required.')
     .max(255, 'Maximum 255 characters allowed.')
-    .email('Enter a valid email address.'),
+    .email('Enter a valid email address.')
 });
 
 export type SignUpSchema = z.infer<typeof signUpSchema>;

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+
 import { getTotalStakedAllTokens } from '@/actions/crypto/get-total-staked-all-tokens';
 import { serializeBigInts } from '@/lib/utils/bigint-utils';
 

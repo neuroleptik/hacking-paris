@@ -12,8 +12,8 @@ import {
   CardTitle
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useTokens } from '@/lib/providers/tokens-provider';
 import { useTotalStaked } from '@/hooks/use-total-staked';
+import { useTokens } from '@/lib/providers/tokens-provider';
 
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
