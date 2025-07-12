@@ -8,9 +8,11 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
+import { useTokens } from '@/lib/providers/tokens-provider';
 
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 import { Club } from './club-list';
 
 interface ClubDetailProps {
@@ -27,6 +29,9 @@ export function ClubDetail({
   onClose
 }: ClubDetailProps) {
   if (!club) return null;
+
+  const { tokens } = useTokens();
+  const clubToken = tokens.find((token) => token.symbol === club.symbol);
 
   return (
     <Dialog
@@ -85,6 +90,17 @@ export function ClubDetail({
             and earn points and rewards for your club based on the number of
             tokens stacked and the final ranking.
           </Badge>
+          <div className="flex flex-row gap-2 justify-between">
+            <Input
+              type="number"
+              placeholder="0"
+              max={clubToken?.balance || 0}
+              className="w-25 text-lg"
+            />
+            <Badge className="w-25 justify-end align-middle align-items-center">
+              Max : {clubToken?.balance || '0'}
+            </Badge>
+          </div>
           <Button
             variant="default"
             className="space-y-2 bg-yellow-600 text-white hover:bg-yellow-500/80  gap-1"

@@ -21,6 +21,7 @@ export interface Club {
   name: string;
   logo: string;
   totalPoints: number;
+  symbol: string;
 }
 
 const clubs: Club[] = [
@@ -28,67 +29,78 @@ const clubs: Club[] = [
     id: '1',
     name: 'Paris Saint-Germain',
     logo: '/clubs/psg.png',
-    totalPoints: 100
+    totalPoints: 100,
+    symbol: 'PSG'
   },
   {
     id: '2',
     name: 'AC Milan',
-    logo: '/clubs/ac_milan.png',
-    totalPoints: 210
+    logo: '/clubs/acm.png',
+    totalPoints: 600,
+    symbol: 'ACM'
   },
   {
     id: '3',
     name: 'Atletico de Madrid',
     logo: '/clubs/atletico_de_madrid.png',
-    totalPoints: 500
+    totalPoints: 500,
+    symbol: 'ATM'
   },
   {
     id: '4',
     name: 'Barcelona',
     logo: '/clubs/barcelona.png',
-    totalPoints: 100
+    totalPoints: 100,
+    symbol: 'BAR'
   },
   {
     id: '5',
     name: 'Manchester City',
     logo: '/clubs/manchester_city.png',
-    totalPoints: 155
+    totalPoints: 155,
+    symbol: 'MC'
   },
   {
     id: '6',
     name: 'AS Roma',
     logo: '/clubs/as_roma.png',
-    totalPoints: 160
+    totalPoints: 160,
+    symbol: 'ASR'
   },
   {
     id: '7',
     name: 'Inter Milan',
     logo: '/clubs/inter_milan.png',
-    totalPoints: 170
+    totalPoints: 170,
+    symbol: 'IM'
   },
   {
     id: '8',
     name: 'Napoli',
     logo: '/clubs/napoli.png',
-    totalPoints: 180
+    totalPoints: 180,
+    symbol: 'NAP'
   },
   {
     id: '9',
     name: 'Arsenal',
     logo: '/clubs/arsenal.png',
-    totalPoints: 190
+    totalPoints: 190,
+    symbol: 'ARS'
   },
   {
     id: '10',
     name: 'Juventus',
-    logo: '/clubs/juventus.png',
-    totalPoints: 1050
+    logo: '/clubs/juv.png',
+    totalPoints: 1050,
+    symbol: 'JUV'
   },
   {
     id: '11',
     name: 'Tottenham Hotspur',
     logo: '/clubs/tottenham.png',
-    totalPoints: 200
+    totalPoints: 200,
+    symbol: 'TOT'
   }
 ];
 

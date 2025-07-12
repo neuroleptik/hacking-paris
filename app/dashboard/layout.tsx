@@ -2,7 +2,8 @@ import * as React from 'react';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-import { getCHZBalance } from '@/actions/crypto/get-ballance';
+import { getAllTokensBalance } from '@/actions/crypto/get-ballance';
+import { getTokenPools } from '@/actions/crypto/get-token-pools';
 import { SidebarRenderer } from '@/components/dashboard/sidebar-renderer';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { Routes } from '@/constants/routes';
@@ -12,6 +13,7 @@ import { dedupedAuth } from '@/lib/auth';
 import { getLoginRedirect } from '@/lib/auth/redirect';
 import { checkSession } from '@/lib/auth/session';
 import { prisma } from '@/lib/db/prisma';
+import { TokensProvider } from '@/lib/providers/tokens-provider';
 import { createTitle } from '@/lib/utils';
 
 export const metadata: Metadata = {
@@ -44,29 +46,41 @@ export default async function DashboardLayout({
     // return redirect(Routes.Onboarding);
   }
 
-  const [favorites, profile] = await Promise.all([
-    getFavorites(),
-    getProfile()
-  ]);
-  const chzBalance = await getCHZBalance();
-  console.log(chzBalance);
+  const [favorites, profile, tokensResponse, tokenPoolsResponse] =
+    await Promise.all([
+      getFavorites(),
+      getProfile(),
+      getAllTokensBalance(),
+      getTokenPools()
+    ]);
+
+  const tokens =
+    tokensResponse?.data?.map((token) => ({
+      balance: String(token.balance),
+      symbol: token.symbol
+    })) || [];
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <SidebarProvider>
-        <SidebarRenderer
-          favorites={favorites}
-          profile={profile}
-          chzBalance={chzBalance.data.balance}
-        />
-        {/* Set max-width so full-width tables can overflow horizontally correctly */}
-        <SidebarInset
-          id="skip"
-          className="size-full lg:[transition:max-width_0.2s_linear] lg:peer-data-[state=collapsed]:max-w-[calc(100vw-var(--sidebar-width-icon))] lg:peer-data-[state=expanded]:max-w-[calc(100vw-var(--sidebar-width))]"
-        >
-          {children}
-        </SidebarInset>
-      </SidebarProvider>
+      <TokensProvider
+        initialTokens={tokens}
+        initialTokenPools={tokenPoolsResponse?.data || []}
+      >
+        <SidebarProvider>
+          <SidebarRenderer
+            favorites={favorites}
+            profile={profile}
+            allTokensBalance={tokens}
+          />
+          {/* Set max-width so full-width tables can overflow horizontally correctly */}
+          <SidebarInset
+            id="skip"
+            className="size-full lg:[transition:max-width_0.2s_linear] lg:peer-data-[state=collapsed]:max-w-[calc(100vw-var(--sidebar-width-icon))] lg:peer-data-[state=expanded]:max-w-[calc(100vw-var(--sidebar-width))]"
+          >
+            {children}
+          </SidebarInset>
+        </SidebarProvider>
+      </TokensProvider>
     </div>
   );
 }
