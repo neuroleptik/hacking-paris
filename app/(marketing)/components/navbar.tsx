@@ -177,7 +177,7 @@ const DesktopNav = ({ navItems, visible }: NavbarProps) => {
                 variant="primary"
                 className="hidden rounded-full border-0 bg-white/20 text-white hover:bg-white/30 md:block"
               >
-                Login
+                Sign In
               </Button>
             </motion.div>
           )}

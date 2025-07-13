@@ -19,7 +19,7 @@ export function LoginCard(
   return (
     <Card {...props}>
       <CardHeader>
-        <CardTitle>Log in</CardTitle>
+        <CardTitle>Sign in</CardTitle>
         <CardDescription>
           Click on the button below to connect your Chiliz wallet.
         </CardDescription>
