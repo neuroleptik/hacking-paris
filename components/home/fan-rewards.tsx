@@ -81,7 +81,7 @@ export const FanRewards = ({ clubName, userTokens }: FanRewardsProps) => {
   if (rewards.length === 0) {
     return (
       <div className="space-y-6 p-4">
-        <h2 className="text-2xl font-bold mb-6">Fan Rewards</h2>
+        <h2 className="mb-6 text-2xl font-bold">Fan Rewards</h2>
         <p className="text-gray-600">No rewards available for this club yet.</p>
       </div>
     );
@@ -89,7 +89,7 @@ export const FanRewards = ({ clubName, userTokens }: FanRewardsProps) => {
 
   return (
     <div className="space-y-6 p-4">
-      <h2 className="text-2xl font-bold mb-6">Fan Rewards</h2>
+      <h2 className="mb-6 text-2xl font-bold">Fan Rewards</h2>
       <div className="grid gap-4">
         {rewards.map((reward, index) => {
           const Icon = getIconForReward(reward.title);
@@ -99,20 +99,20 @@ export const FanRewards = ({ clubName, userTokens }: FanRewardsProps) => {
           return (
             <Card
               key={index}
-              className={`p-4 ${isUnlocked ? 'bg-green-50' : ''}`}
+              className={`p-4 `}
             >
               <div className="flex items-start gap-4">
                 <div
-                  className={`p-2 rounded-full ${
+                  className={`rounded-full p-2 ${
                     isUnlocked
                       ? 'bg-green-100 text-green-600'
                       : 'bg-gray-100 text-gray-600'
                   }`}
                 >
-                  <Icon className="w-6 h-6" />
+                  <Icon className="size-6" />
                 </div>
                 <div className="flex-1">
-                  <div className="flex justify-between items-center mb-2">
+                  <div className="mb-2 flex items-center justify-between">
                     <h3 className="font-semibold">{reward.title}</h3>
                     <span
                       className={`text-sm ${
@@ -122,7 +122,7 @@ export const FanRewards = ({ clubName, userTokens }: FanRewardsProps) => {
                       {userTokens}/{reward.minimumPoints} points
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mb-2">
+                  <p className="mb-2 text-sm text-gray-600">
                     {reward.shortDescription}
                   </p>
                   <Progress
