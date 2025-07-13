@@ -93,7 +93,7 @@ export function AppSidebar({
                 <InfoIcon className="hidden size-3 shrink-0 text-muted-foreground sm:inline" />
               </TooltipTrigger>
               <TooltipContent>
-                You can create a fan token pool for your team and stack your
+                You can create a fan token pool for your team and stake your
                 tokens together.
               </TooltipContent>
             </Tooltip>
@@ -101,7 +101,10 @@ export function AppSidebar({
           {tokenPools &&
             tokenPools.length > 0 &&
             tokenPools.map((pool) => (
-              <Badge className="text-md mx-1 mb-2 gap-1 bg-green-500/10 text-green-500 text-muted-foreground hover:cursor-default hover:bg-green-500/10 hover:text-green-500">
+              <Badge
+                key={pool.symbol}
+                className="text-md mx-1 mb-2 gap-1 bg-green-500/10 text-green-500 hover:cursor-default hover:bg-green-500/10 hover:text-green-500"
+              >
                 {pool.symbol}
               </Badge>
             ))}

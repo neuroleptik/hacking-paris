@@ -11,22 +11,22 @@ const FAQs = [
   {
     question: 'What is War Club and how does it work?',
     answer:
-      'War Club is a community platform where fans stack tokens of their favorite clubs via the Chiliz blockchain. Clubs compete in worldwide rankings with leagues and tiers, and fans can join organizations to maximize their impact.'
+      'War Club is a community platform where fans stake tokens of their favorite clubs via the Chiliz blockchain. Clubs compete in worldwide rankings with leagues and tiers, and fans can join organizations to maximize their impact.'
   },
   {
-    question: 'How do I start stacking tokens for my club?',
+    question: 'How do I start staking tokens for my club?',
     answer:
-      "Simply create an account, select your favorite club, and begin stacking tokens. You can join or create organizations with other fans to increase your collective stacking power and boost your club's ranking."
+      "Simply create an account, select your favorite club, and begin staking tokens. You can join or create organizations with other fans to increase your collective staking power and boost your club's ranking."
   },
   {
     question: 'What are fan organizations and how do they work?',
     answer:
-      "Fan organizations are groups of supporters who join forces to maximize their club's token stacking power. By working together, organizations can significantly boost their club's ranking and unlock better rewards."
+      "Fan organizations are groups of supporters who join forces to maximize their club's token staking power. By working together, organizations can significantly boost their club's ranking and unlock better rewards."
   },
   {
     question: 'How do club rankings and leagues work?',
     answer:
-      'Clubs compete in a dynamic ranking system with multiple leagues and tiers. The more tokens stacked by fans, the higher your club climbs. Rankings are updated regularly based on fan support and token activity.'
+      'Clubs compete in a dynamic ranking system with multiple leagues and tiers. The more tokens staked by fans, the higher your club climbs. Rankings are updated regularly based on fan support and token activity.'
   },
   {
     question: 'What happens to tokens at the end of the season?',
@@ -53,8 +53,8 @@ export function FrequentlyAskedQuestions() {
         </h2>
       </div>
       <p className="mx-auto mt-4  max-w-lg px-4 text-center text-sm text-neutral-400 md:px-0">
-        Everything you need to know about War Club, token stacking, and
-        competing for your favorite clubs.
+        Everything you need to know about War Club, token staking, and competing
+        for your favorite clubs.
       </p>
       <div className="mx-auto mt-10 max-w-3xl divide-y divide-neutral-800 md:mt-20">
         {FAQs.map((faq, index) => (

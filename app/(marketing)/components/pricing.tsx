@@ -58,7 +58,7 @@ const plans: Array<Plan> = [
     price: 0,
     period: 'free',
     features: [
-      { text: 'Stack tokens for your club', included: true },
+      { text: 'Stake tokens for your club', included: true },
       { text: 'Join fan organizations', included: true },
       { text: 'View club rankings', included: true },
       { text: 'Advanced analytics', included: false },
@@ -80,7 +80,7 @@ const plans: Array<Plan> = [
     period: 'lifetime',
     features: [
       { text: 'All Fan features included', included: true },
-      { text: 'Advanced stacking analytics', included: true },
+      { text: 'Advanced staking analytics', included: true },
       { text: 'Priority in organizations', included: true },
       { text: 'Exclusive club rewards', included: true },
       { text: 'Early access to new features', included: true }

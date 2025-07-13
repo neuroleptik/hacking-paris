@@ -26,7 +26,7 @@ export function Testimonials() {
               say about us
             </h2>
             <p className="mx-auto mt-6 max-w-sm text-center text-sm text-neutral-400 lg:mx-0 lg:text-left">
-              Hear from passionate fans who are already stacking tokens and
+              Hear from passionate fans who are already staking tokens and
               competing for their favorite clubs on War Club.
             </p>
           </div>
@@ -38,7 +38,7 @@ export function Testimonials() {
             name="Sarah Johnson"
             role="PSG Fan"
             image="/manu_arora.jpg"
-            quote="War Club has revolutionized how I support PSG. Stacking tokens with other fans and climbing the rankings together is incredible!"
+            quote="War Club has revolutionized how I support PSG. Staking tokens with other fans and climbing the rankings together is incredible!"
           />
           <TestimonialCard
             name="Michael Chen"

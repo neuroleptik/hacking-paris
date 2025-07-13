@@ -3,17 +3,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import ArsenalBadge from '@/public/images/arsenal.png';
-import ASRomaBadge from '@/public/images/as_roma.png';
-import AthleticoMadridBadge from '@/public/images/atletico_de_madrid.png';
 import BarcelonaBadge from '@/public/images/barcelona.png';
 import CoinbaseWalletLogo from '@/public/images/coinbase.png';
-import InterMilanBadge from '@/public/images/inter_milan.png';
 import JuventusBadge from '@/public/images/juv.png';
 import KeplrLogo from '@/public/images/keplr.png';
 import LeafLogo from '@/public/images/leaf.png';
 import ManchesterCityBadge from '@/public/images/manchester_city.png';
 import MetaMaskLogo from '@/public/images/metamask.png';
-import TottenhamHotspurBadge from '@/public/images/tottenham.png';
 import TrustWalletLogo from '@/public/images/trust.png';
 import JB from '@/public/marketing/jb.jpeg';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -40,7 +36,7 @@ export function Features() {
       </div>
       <p className="mx-auto mt-4 max-w-lg text-center text-sm text-neutral-400">
         Discover the tools that power the ultimate fan loyalty platform—from
-        token stacking to club rankings and organizational rewards.
+        token staking to club rankings and organizational rewards.
       </p>
       <div className="cols-1  mx-auto mt-20 grid max-w-3xl auto-rows-[25rem] gap-4 lg:max-w-none lg:grid-cols-5">
         <Card className="relative flex flex-col justify-between lg:col-span-2">
@@ -49,11 +45,11 @@ export function Features() {
           </div>
           <CardContent className="absolute bottom-0 h-40">
             <CardTitle>
-              Token Stacking
+              Token Staking
               <br /> System
             </CardTitle>
             <CardDescription>
-              Stack tokens with fellow fans to boost your club&apos;s power and
+              Stake tokens with fellow fans to boost your club&apos;s power and
               climb the global rankings together.
             </CardDescription>
           </CardContent>
@@ -90,7 +86,7 @@ export function Features() {
               Growing Fan <br /> Community
             </CardTitle>
             <CardDescription>
-              Join thousands of passionate fans already stacking tokens and
+              Join thousands of passionate fans already staking tokens and
               competing for their favorite clubs worldwide.
             </CardDescription>
           </CardContent>
@@ -273,7 +269,7 @@ type Organization = {
   name: string;
   club: string;
   members: number;
-  tokensStacked: number;
+  tokensStaked: number;
   tier: string;
   clubBadge: typeof ArsenalBadge;
 };
@@ -285,7 +281,7 @@ export const FanOrganizations = () => {
       name: 'United We Stand',
       club: 'Manchester United',
       members: 1247,
-      tokensStacked: 156789,
+      tokensStaked: 156789,
       tier: 'League Diamond',
       clubBadge: ArsenalBadge // Using Arsenal as placeholder
     },
@@ -294,7 +290,7 @@ export const FanOrganizations = () => {
       name: 'Culé Warriors',
       club: 'Barcelona',
       members: 892,
-      tokensStacked: 198456,
+      tokensStaked: 198456,
       tier: 'League Platinum',
       clubBadge: BarcelonaBadge
     },
@@ -303,7 +299,7 @@ export const FanOrganizations = () => {
       name: 'Gooner Army',
       club: 'Arsenal',
       members: 634,
-      tokensStacked: 87234,
+      tokensStaked: 87234,
       tier: 'League Gold',
       clubBadge: ArsenalBadge
     }
@@ -403,9 +399,9 @@ export const FanOrganizations = () => {
             </div>
             <div className="text-center">
               <p className="text-lg font-bold text-white">
-                {currentOrg.tokensStacked.toLocaleString()}
+                {currentOrg.tokensStaked.toLocaleString()}
               </p>
-              <p className="text-xs text-neutral-400">Tokens Stacked</p>
+              <p className="text-xs text-neutral-400">Tokens Staked</p>
             </div>
           </div>
 

@@ -229,7 +229,7 @@ export function Rewards() {
         </h2>
       </div>
       <p className="mx-auto mt-4 max-w-lg text-center text-sm text-neutral-400">
-        Stack more tokens to unlock exclusive rewards from your favorite clubs.
+        Stake more tokens to unlock exclusive rewards from your favorite clubs.
         From collector items to VIP experiences, your loyalty pays off.
       </p>
 
@@ -279,7 +279,7 @@ export function Rewards() {
               </h3>
             </div>
             <p className="mb-4 text-neutral-400">
-              Stack tokens to unlock exclusive {currentClub.name} rewards
+              Stake tokens to unlock exclusive {currentClub.name} rewards
             </p>
             <div className="flex items-center justify-center gap-2">
               <span className="text-sm text-neutral-500">
@@ -429,7 +429,7 @@ export function Rewards() {
           </div>
 
           <Button className="mx-auto mt-20 h-10 w-32 rounded-full text-xs font-medium sm:text-sm md:h-12 md:w-40 md:text-base lg:h-16 lg:w-48">
-            Stack Tokens Now
+            Stake Tokens Now
           </Button>
         </motion.div>
       </AnimatePresence>
