@@ -280,7 +280,21 @@ export function ClubList() {
                     <div className="font-semibold">
                       {club.totalStaked.toLocaleString()} total staked
                     </div>
-                    <Badge className="text-sm text-muted-foreground bg-green-500/20 text-green-500 mt-2 cursor-default">
+                    <Badge
+                      className={`text-sm text-muted-foreground ${
+                        parseInt(
+                          personalStakes
+                            .find(
+                              (stake) =>
+                                stake.address.toLowerCase() ==
+                                club.token.toLowerCase()
+                            )
+                            ?.totalStaked.toLocaleString() || '0'
+                        ) > 0
+                          ? 'bg-green-500/20 text-green-500'
+                          : 'bg-gray-500/20 text-gray-500'
+                      } mt-2 cursor-default`}
+                    >
                       <LockIcon className="size-4 mr-1" />
                       {parseInt(
                         personalStakes
