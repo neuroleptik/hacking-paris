@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { sendStakeTransactions } from '@/lib/crypto/send-transactions';
 
 // Types pour Ethereum
 declare global {
@@ -81,13 +82,11 @@ export function StakeModal({
           params: [message, account]
         });
 
-        setIsLoading(true);
+                setIsLoading(true);
         try {
           console.log('Sending staking request:', {
             tokenAddress: club.token,
-            amount: amount,
-            signature: signature,
-            message: message
+            amount: amount
           });
 
           const response = await fetch('/api/stake', {
@@ -97,53 +96,57 @@ export function StakeModal({
             },
             body: JSON.stringify({
               tokenAddress: club.token,
-              amount: amount,
-              signature: signature,
-              message: message
+              amount: amount
             })
           });
 
           console.log('Response status:', response.status);
           const result = await response.json();
           console.log('Response result:', result);
-          console.log(result);
-          if (response.ok) {
-            const hash = result.transactionHash;
-            const hashDisplay =
-              hash && hash !== 'Transaction en cours...'
-                ? `${hash.slice(0, 10)}...`
-                : 'Transaction in progress...';
 
-            const isTestMode = result.isTestMode;
-            const modeText = isTestMode ? ' (TEST MODE)' : '';
-            const gasInfo = result.totalGasCost
-              ? ` - Fees: ${result.totalGasCost}`
-              : '';
+                    if (response.ok && result.data) {
+            const data = result.data;
 
-            toast.success(
-              `Staking successful! Hash: ${hashDisplay}${modeText}${gasInfo}`
-            );
-            console.log('Staking result:', result);
+            if (data.readyForTransactions) {
+              // Mode production - envoyer de vraies transactions
+              console.log('🚀 Envoi de vraies transactions blockchain...');
 
-            // Afficher plus de détails dans la console
-            console.log('Transaction details:', {
-              stakeHash: result.transactionHash,
-              approveHash: result.approveHash,
-              blockNumber: result.blockNumber,
-              amount: result.amount,
-              tokenAddress: result.tokenAddress,
-              isTestMode: result.isTestMode,
-              gasUsed: result.gasUsed,
-              gasPrice: result.gasPrice,
-              totalGasCost: result.totalGasCost,
-              approveGasUsed: result.approveGasUsed,
-              stakeGasUsed: result.stakeGasUsed
-            });
+              try {
+                const transactionResult = await sendStakeTransactions(
+                  data.transactionData.approve,
+                  data.transactionData.stake,
+                  data.userWalletAddress
+                );
 
+                if (transactionResult.success) {
+                  const hashDisplay = transactionResult.transactionHash
+                    ? `${transactionResult.transactionHash.slice(0, 10)}...`
+                    : 'Transaction confirmée';
+
+                  toast.success(
+                    `Staking réussi ! Hash: ${hashDisplay} - Frais: ${data.estimatedTotalCost} CHZ`
+                  );
+
+                  console.log('✅ Vraies transactions confirmées:', transactionResult);
+                } else {
+                  toast.error(`Erreur transaction: ${transactionResult.error}`);
+                  console.error('❌ Erreur transaction:', transactionResult.error);
+                }
+              } catch (error) {
+                toast.error('Erreur lors de l\'envoi des transactions');
+                console.error('❌ Erreur envoi transactions:', error);
+              }
+            } else {
+              // Fallback - afficher les estimations
+              toast.success(
+                `Signatures vérifiées - Coût estimé: ${data.estimatedTotalCost} CHZ`
+              );
+            }
+
+            console.log('Staking result:', data);
             onClose();
             setAmount('');
 
-            // Call the refresh callback if provided
             if (onStakeSuccess) {
               onStakeSuccess();
             }
