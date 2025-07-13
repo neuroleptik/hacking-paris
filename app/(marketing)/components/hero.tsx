@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import BGImage from '@/public/bg-marketing.png';
 import {
   motion,
   useMotionTemplate,
@@ -54,7 +55,7 @@ export function Hero() {
               'bg-clip-text text-transparent'
             )}
           >
-            Unite, Stack, Dominate
+            Unite, Stake, Dominate
           </motion.h2>
         </Balancer>
       </div>
@@ -64,7 +65,7 @@ export function Hero() {
         transition={{ duration: 0.2, delay: 0.5 }}
         className="relative z-20 mx-auto mt-4 max-w-xl px-4 text-center text-base/6 text-gray-500  sm:text-base"
       >
-        Stack tokens with fellow fans to power your club to victory. Compete in
+        Stake tokens with fellow fans to power your club to victory. Compete in
         global rankings, join organizations, and unlock exclusive rewards as
         your club climbs the leaderboards.
       </motion.p>
@@ -101,7 +102,7 @@ export function Hero() {
             blur={10}
           />
           <Image
-            src="/dashboard.webp"
+            src={BGImage}
             alt="header"
             width={1920}
             height={1080}
