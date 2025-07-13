@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import { getAllTokensBalance } from '@/actions/crypto/get-ballance';
+import { getPersonalStakes } from '@/actions/crypto/get-personal-stake';
 import { getTokenPools } from '@/actions/crypto/get-token-pools';
 import { SidebarRenderer } from '@/components/dashboard/sidebar-renderer';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
@@ -54,6 +55,10 @@ export default async function DashboardLayout({
       getTokenPools()
     ]);
 
+  const personalStakes = await getPersonalStakes();
+
+  console.log('personalStakes', personalStakes);
+
   const tokens =
     tokensResponse?.data?.map((token) => ({
       balance: String(token.balance),
@@ -65,6 +70,7 @@ export default async function DashboardLayout({
       <TokensProvider
         initialTokens={tokens}
         initialTokenPools={tokenPoolsResponse?.data || []}
+        initialPersonalStakes={personalStakes?.data || []}
       >
         <SidebarProvider>
           <SidebarRenderer

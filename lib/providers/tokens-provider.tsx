@@ -10,6 +10,7 @@ interface Token {
 interface TokensContextType {
   tokens: Token[];
   tokenPools: TokenPool[];
+  personalStakes: PersonalStake[];
 }
 
 interface TokenPool {
@@ -18,20 +19,31 @@ interface TokenPool {
   balance: string;
 }
 
+interface PersonalStake {
+  totalStaked: string;
+  address: string;
+}
+
 const TokensContext = createContext<TokensContextType | undefined>(undefined);
 
 export function TokensProvider({
   children,
   initialTokens,
-  initialTokenPools
+  initialTokenPools,
+  initialPersonalStakes
 }: {
   children: React.ReactNode;
   initialTokens: Token[];
   initialTokenPools: TokenPool[];
+  initialPersonalStakes: PersonalStake[];
 }) {
   return (
     <TokensContext.Provider
-      value={{ tokens: initialTokens, tokenPools: initialTokenPools }}
+      value={{
+        tokens: initialTokens,
+        tokenPools: initialTokenPools,
+        personalStakes: initialPersonalStakes
+      }}
     >
       {children}
     </TokensContext.Provider>

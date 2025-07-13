@@ -8,6 +8,7 @@ import { getClubs } from '@/actions/crypto/get-clubs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTotalStaked } from '@/hooks/use-total-staked';
+import { useTokens } from '@/lib/providers/tokens-provider';
 
 interface TokensComponentProps {
   allTokensBalance: {
@@ -76,6 +77,10 @@ export function TokensComponent({
       return total + parseFloat(token.balance) * rate;
     }, 0);
   };
+
+  const { personalStakes } = useTokens();
+
+  console.log('personalStakes hooked', personalStakes);
 
   return (
     <div className="flex flex-row gap-4 mx-auto w-2/3 mt-3">
@@ -151,7 +156,12 @@ export function TokensComponent({
               ) : (
                 <>
                   <span className="text-3xl font-bold">
-                    {totalStakedData?.data?.totalStaked || '0'}
+                    {(personalStakes &&
+                      personalStakes.length > 0 &&
+                      personalStakes
+                        ?.map((stake) => Number(stake.totalStaked))
+                        .reduce((acc, curr) => acc + curr, 0)) ||
+                      '0'}
                   </span>
                   <span className="text-muted-foreground mt-2">
                     Total value of staked tokens
