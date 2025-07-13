@@ -123,7 +123,11 @@ export function TokensComponent({
           <CardContent>
             <div className="flex h-full flex-col items-center justify-center">
               <span className="text-3xl font-bold">
-                {calculateTotalInEur().toFixed(2)}€
+                {calculateTotalInEur().toLocaleString('fr-FR', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2
+                })}
+                €
               </span>
               <span className="mt-2 text-muted-foreground">
                 Valeur totale estimée
