@@ -71,9 +71,7 @@ export function AppSidebar({
             !isCollapsed && 'pl-0.5'
           )}
         >
-          {showLogo && (
-            <Logo className="truncate transition-[width,height,padding]" />
-          )}
+          {showLogo && <Logo className="transition-[width,height,padding]" />}
           {xlUp && (
             <SidebarTrigger
               icon={isCollapsed ? 'menu' : 'chevronLeft'}
@@ -88,7 +86,7 @@ export function AppSidebar({
           /* Overriding the hardcoded { disply:table } to get full flex height */
           className="h-full  [&>[data-radix-scroll-area-viewport]>div]:!flex [&>[data-radix-scroll-area-viewport]>div]:h-full [&>[data-radix-scroll-area-viewport]>div]:flex-col"
         >
-          <div className="flex flex-row gap-2 ms-2 mt-2 mb-3">
+          <div className="mb-3 ms-2 mt-2 flex flex-row gap-2">
             Team Fan Token Pool
             <Tooltip delayDuration={0}>
               <TooltipTrigger asChild>
@@ -103,7 +101,7 @@ export function AppSidebar({
           {tokenPools &&
             tokenPools.length > 0 &&
             tokenPools.map((pool) => (
-              <Badge className="text-md text-muted-foreground mx-1 bg-green-500/10 text-green-500 hover:bg-green-500/10 hover:text-green-500 hover:cursor-default gap-1 mb-2">
+              <Badge className="text-md mx-1 mb-2 gap-1 bg-green-500/10 text-green-500 text-muted-foreground hover:cursor-default hover:bg-green-500/10 hover:text-green-500">
                 {pool.symbol}
               </Badge>
             ))}

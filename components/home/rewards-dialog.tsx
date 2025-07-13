@@ -27,10 +27,10 @@ export function RewardsDialog({
       open={isOpen}
       onOpenChange={onClose}
     >
-      <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <GiftIcon className="w-5 h-5" />
+            <GiftIcon className="size-5" />
             Fan Rewards - {clubName}
           </DialogTitle>
         </DialogHeader>

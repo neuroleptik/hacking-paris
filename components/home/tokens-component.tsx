@@ -2,10 +2,7 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import { RefreshCw } from 'lucide-react';
 
-import { getClubs } from '@/actions/crypto/get-clubs';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTotalStaked } from '@/hooks/use-total-staked';
 import { useTokens } from '@/lib/providers/tokens-provider';
@@ -28,18 +25,12 @@ interface ConversionRates {
 
 export function TokensComponent({
   allTokensBalance,
-  stakedTokensBalance,
-  onRefresh
+  stakedTokensBalance
 }: TokensComponentProps): React.JSX.Element {
   const [conversionRates, setConversionRates] = React.useState<ConversionRates>(
     {}
   );
-  const {
-    data: totalStakedData,
-    loading: totalStakedLoading,
-    error: totalStakedError,
-    refresh: refreshTotalStaked
-  } = useTotalStaked();
+  const { data: totalStakedData, error: totalStakedError } = useTotalStaked();
 
   console.log('stakedTokensBalance', stakedTokensBalance);
   console.log('totalStakedData', totalStakedData);
@@ -83,7 +74,7 @@ export function TokensComponent({
   console.log('personalStakes hooked', personalStakes);
 
   return (
-    <div className="flex flex-row gap-4 mx-auto w-2/3 mt-3">
+    <div className="mx-auto mt-3 flex w-2/3 flex-row gap-4">
       <Card className="w-full">
         <CardHeader>
           <CardTitle>My Tokens</CardTitle>
@@ -93,7 +84,7 @@ export function TokensComponent({
             {allTokensBalance.map((token) => (
               <div
                 key={token.symbol}
-                className="flex items-center justify-between p-2 rounded-lg bg-secondary/20"
+                className="flex items-center justify-between rounded-lg bg-secondary/20 p-2"
               >
                 <div className="flex items-center gap-2">
                   <Image
@@ -124,32 +115,32 @@ export function TokensComponent({
           </div>
         </CardContent>
       </Card>
-      <div className="flex flex-col gap-4 w-1/2">
-        <Card className="w-full h-full">
+      <div className="flex w-1/2 flex-col gap-4">
+        <Card className="size-full">
           <CardHeader>
             <CardTitle>Total Value of My Wallet</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col items-center justify-center h-full">
+            <div className="flex h-full flex-col items-center justify-center">
               <span className="text-3xl font-bold">
                 {calculateTotalInEur().toFixed(2)}€
               </span>
-              <span className="text-muted-foreground mt-2">
+              <span className="mt-2 text-muted-foreground">
                 Valeur totale estimée
               </span>
             </div>
           </CardContent>
         </Card>
-        <Card className="w-full h-full">
+        <Card className="size-full">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Total Staked tokens</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col items-center justify-center h-full">
+            <div className="flex h-full flex-col items-center justify-center">
               {totalStakedError ? (
                 <div className="text-center">
                   <span className="text-lg font-bold text-red-500">Error</span>
-                  <span className="text-sm text-muted-foreground mt-1 block">
+                  <span className="mt-1 block text-sm text-muted-foreground">
                     {totalStakedError}
                   </span>
                 </div>
@@ -163,7 +154,7 @@ export function TokensComponent({
                         .reduce((acc, curr) => acc + curr, 0)) ||
                       '0'}
                   </span>
-                  <span className="text-muted-foreground mt-2">
+                  <span className="mt-2 text-muted-foreground">
                     Total value of staked tokens
                   </span>
                 </>

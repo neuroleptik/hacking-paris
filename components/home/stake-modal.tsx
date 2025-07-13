@@ -53,12 +53,12 @@ export function StakeModal({
 
   const handleStake = async () => {
     if (!club || !amount || parseFloat(amount) <= 0) {
-      toast.error('Veuillez entrer un montant valide');
+      toast.error('Please enter a valid amount');
       return;
     }
 
     if (parseFloat(amount) > parseFloat(userBalance)) {
-      toast.error("Vous n'avez pas assez de tokens pour staker ce montant");
+      toast.error("You don't have enough tokens to stake this amount");
       return;
     }
 
@@ -70,7 +70,7 @@ export function StakeModal({
         });
         const account = accounts[0];
 
-        const message = `Je veux staker ${amount} ${club.symbol} tokens. Timestamp: ${Date.now()}`;
+        const message = `I want to stake ${amount} ${club.symbol} tokens. Timestamp: ${Date.now()}`;
         const signature = await window.ethereum.request({
           method: 'personal_sign',
           params: [message, account]
@@ -107,16 +107,16 @@ export function StakeModal({
             const hashDisplay =
               hash && hash !== 'Transaction en cours...'
                 ? `${hash.slice(0, 10)}...`
-                : 'Transaction en cours...';
+                : 'Transaction in progress...';
 
             const isTestMode = result.isTestMode;
-            const modeText = isTestMode ? ' (MODE TEST)' : '';
+            const modeText = isTestMode ? ' (TEST MODE)' : '';
             const gasInfo = result.totalGasCost
-              ? ` - Frais: ${result.totalGasCost}`
+              ? ` - Fees: ${result.totalGasCost}`
               : '';
 
             toast.success(
-              `Staking réussi ! Hash: ${hashDisplay}${modeText}${gasInfo}`
+              `Staking successful! Hash: ${hashDisplay}${modeText}${gasInfo}`
             );
             console.log('Staking result:', result);
 
@@ -143,22 +143,22 @@ export function StakeModal({
               onStakeSuccess();
             }
           } else {
-            const errorMessage = result.error || 'Erreur lors du staking';
+            const errorMessage = result.error || 'Error during staking';
             toast.error(errorMessage);
             console.error('Staking error:', result);
           }
         } catch (error) {
-          console.error('Erreur lors du staking:', error);
-          toast.error('Erreur lors du staking');
+          console.error('Error during staking:', error);
+          toast.error('Error during staking');
         } finally {
           setIsLoading(false);
         }
       } catch (error) {
-        console.error('Erreur lors de la signature:', error);
-        toast.error('Erreur lors de la signature du message');
+        console.error('Error during signature:', error);
+        toast.error('Error during message signature');
       }
     } else {
-      toast.error('Wallet non connecté. Veuillez connecter MetaMask.');
+      toast.error('Wallet not connected. Please connect MetaMask.');
     }
   };
 
@@ -188,11 +188,11 @@ export function StakeModal({
       if (response.ok) {
         setUserBalance(data.balance);
       } else {
-        console.error('Erreur lors de la récupération du solde:', data.error);
+        console.error('Error retrieving balance:', data.error);
         setUserBalance('0');
       }
     } catch (error) {
-      console.error('Erreur lors de la récupération du solde:', error);
+      console.error('Error retrieving balance:', error);
       setUserBalance('0');
     } finally {
       setIsLoadingBalance(false);
@@ -211,13 +211,13 @@ export function StakeModal({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <ZapIcon className="w-5 h-5" />
-            Staker des tokens {club?.symbol}
+            <ZapIcon className="size-5" />
+            Stake {club?.symbol} tokens
           </DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="amount">Montant à staker</Label>
+            <Label htmlFor="amount">Amount to stake</Label>
             <div className="flex gap-2">
               <Input
                 id="amount"
@@ -236,45 +236,45 @@ export function StakeModal({
                 disabled={isLoadingBalance}
               >
                 {isLoadingBalance ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="size-4 animate-spin" />
                 ) : (
                   'Max'
                 )}
               </Button>
             </div>
             <p className="text-sm text-muted-foreground">
-              Solde disponible:{' '}
+              Available balance:{' '}
               {isLoadingBalance
-                ? 'Chargement...'
+                ? 'Loading...'
                 : `${userBalance} ${club?.symbol}`}
             </p>
           </div>
 
-          <div className="bg-muted p-3 rounded-lg">
-            <h4 className="font-semibold mb-2">Résumé</h4>
+          <div className="rounded-lg bg-muted p-3">
+            <h4 className="mb-2 font-semibold">Summary</h4>
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
                 <span>Club:</span>
                 <span>{club?.name}</span>
               </div>
               <div className="flex justify-between">
-                <span>Montant à staker:</span>
+                <span>Amount to stake:</span>
                 <span>
                   {amount || '0'} {club?.symbol}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span>Total staké actuel:</span>
+                <span>Current total staked:</span>
                 <span>
                   {club?.totalStaked} {club?.symbol}
                 </span>
               </div>
               <div className="flex justify-between text-yellow-600">
-                <span>Frais de transaction:</span>
+                <span>Transaction fees:</span>
                 <span>~0.001-0.005 CHZ</span>
               </div>
-              <div className="text-xs text-muted-foreground mt-2">
-                ⚠️ En mode test, aucune vraie transaction n'est effectuée
+              <div className="mt-2 text-xs text-muted-foreground">
+                ⚠️ In test mode, no real transaction is performed
               </div>
             </div>
           </div>
@@ -286,13 +286,13 @@ export function StakeModal({
           >
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Staking en cours...
+                <Loader2 className="mr-2 size-4 animate-spin" />
+                Staking in progress...
               </>
             ) : (
               <>
-                <ZapIcon className="w-4 h-4 mr-2" />
-                Staker {amount || '0'} {club?.symbol}
+                <ZapIcon className="mr-2 size-4" />
+                Stake {amount || '0'} {club?.symbol}
               </>
             )}
           </Button>
