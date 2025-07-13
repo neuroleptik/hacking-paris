@@ -11,7 +11,7 @@ import { Navbar } from './components/navbar';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'War Club - Ultimate Fan Loyalty Platform',
+  title: 'Club War - Ultimate Fan Loyalty Platform',
   description:
     'Stake tokens with fellow fans to power your club to victory. Compete in global rankings, join organizations, and unlock exclusive rewards on the Chiliz blockchain.'
 };

@@ -9,9 +9,9 @@ import { IconArrowRight } from '../icons/arrow-right';
 
 const FAQs = [
   {
-    question: 'What is War Club and how does it work?',
+    question: 'What is Club War and how does it work?',
     answer:
-      'War Club is a community platform where fans stake tokens of their favorite clubs via the Chiliz blockchain. Clubs compete in worldwide rankings with leagues and tiers, and fans can join organizations to maximize their impact.'
+      'Club War is a community platform where fans stake tokens of their favorite clubs via the Chiliz blockchain. Clubs compete in worldwide rankings with leagues and tiers, and fans can join organizations to maximize their impact.'
   },
   {
     question: 'How do I start staking tokens for my club?',
@@ -53,7 +53,7 @@ export function FrequentlyAskedQuestions() {
         </h2>
       </div>
       <p className="mx-auto mt-4  max-w-lg px-4 text-center text-sm text-neutral-400 md:px-0">
-        Everything you need to know about War Club, token staking, and competing
+        Everything you need to know about Club War, token staking, and competing
         for your favorite clubs.
       </p>
       <div className="mx-auto mt-10 max-w-3xl divide-y divide-neutral-800 md:mt-20">

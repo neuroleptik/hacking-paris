@@ -189,7 +189,7 @@ export default function CTA() {
           </h2>
           <p className="mx-auto my-4 max-w-lg px-4 text-center text-xs text-neutral-400 sm:text-sm md:my-6 md:text-base lg:my-8">
             Join thousands of fans staking tokens, climbing rankings, and
-            competing for glory. Your club needs you in the War Club arena.
+            competing for glory. Your club needs you in the Club War arena.
           </p>
         </div>
         <BackgroundGrid className="z-0 mt-8 md:mt-16 lg:mt-36" />

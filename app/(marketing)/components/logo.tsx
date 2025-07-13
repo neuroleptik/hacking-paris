@@ -10,7 +10,7 @@ export const Logo = () => {
       className="relative z-20 flex shrink-0 items-center gap-2 px-2 py-1 text-sm font-normal text-black"
     >
       <Swords className="size-6 text-white" />
-      <span className="font-medium text-white">War Club</span>
+      <span className="font-medium text-white">Club War</span>
     </Link>
   );
 };
