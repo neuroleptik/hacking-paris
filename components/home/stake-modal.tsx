@@ -73,10 +73,6 @@ export function StakeModal({
     // Demander à l'utilisateur de signer le message
     if (typeof window !== 'undefined' && window.ethereum) {
       try {
-        const accounts = await window.ethereum.request({
-          method: 'eth_requestAccounts'
-        });
-
         setIsLoading(true);
         try {
           console.log('Sending staking request:', {
@@ -108,9 +104,9 @@ export function StakeModal({
 
               try {
                 const transactionResult = await sendStakeTransactions(
-                  data.transactionData.approve,
+                    data.transactionData.approve,
                   data.transactionData.stake,
-                  data.userWalletAddress
+                  data.userWalletAddress,
                 );
 
                 if (transactionResult.success) {
@@ -262,7 +258,7 @@ export function StakeModal({
               Available balance:{' '}
               {isLoadingBalance
                 ? 'Loading...'
-                : `${userBalance} ${club?.symbol}`}
+                : `${parseInt(userBalance)} ${club?.symbol}`}
             </p>
           </div>
 
@@ -297,9 +293,6 @@ export function StakeModal({
               <div className="flex justify-between text-yellow-600">
                 <span>Transaction fees:</span>
                 <span>~0.001-0.005 CHZ</span>
-              </div>
-              <div className="mt-2 text-xs text-muted-foreground">
-                ⚠️ In test mode, no real transaction is performed
               </div>
             </div>
           </div>

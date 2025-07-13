@@ -54,7 +54,7 @@ export const stakeTokens = authActionClient
 
         if (!user || !user.walletAddress) {
           throw new NotFoundError(
-            'Adresse du wallet non trouvée pour cet utilisateur'
+            'Wallet was not found'
           );
         }
 

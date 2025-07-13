@@ -26,14 +26,6 @@ export async function sendStakeTransactions(
       throw new Error('MetaMask n\'est pas installé');
     }
 
-    // Demander la connexion au wallet
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    const userAccount = accounts[0];
-
-    if (userAccount.toLowerCase() !== userWalletAddress.toLowerCase()) {
-      throw new Error('Le wallet connecté ne correspond pas à votre wallet enregistré');
-    }
-
     // Créer le provider et signer
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
