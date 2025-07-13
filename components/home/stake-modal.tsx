@@ -82,7 +82,7 @@ export function StakeModal({
           params: [message, account]
         });
 
-                setIsLoading(true);
+        setIsLoading(true);
         try {
           console.log('Sending staking request:', {
             tokenAddress: club.token,
@@ -104,7 +104,7 @@ export function StakeModal({
           const result = await response.json();
           console.log('Response result:', result);
 
-                    if (response.ok && result.data) {
+          if (response.ok && result.data) {
             const data = result.data;
 
             if (data.readyForTransactions) {
@@ -127,13 +127,21 @@ export function StakeModal({
                     `Staking réussi ! Hash: ${hashDisplay} - Frais: ${data.estimatedTotalCost} CHZ`
                   );
 
-                  console.log('✅ Vraies transactions confirmées:', transactionResult);
+                  window.location.reload();
+
+                  console.log(
+                    '✅ Vraies transactions confirmées:',
+                    transactionResult
+                  );
                 } else {
                   toast.error(`Erreur transaction: ${transactionResult.error}`);
-                  console.error('❌ Erreur transaction:', transactionResult.error);
+                  console.error(
+                    '❌ Erreur transaction:',
+                    transactionResult.error
+                  );
                 }
               } catch (error) {
-                toast.error('Erreur lors de l\'envoi des transactions');
+                toast.error("Erreur lors de l'envoi des transactions");
                 console.error('❌ Erreur envoi transactions:', error);
               }
             } else {
@@ -274,10 +282,15 @@ export function StakeModal({
               <div className="flex justify-between">
                 <span>Current total staked:</span>
                 <span>
-                  {personalStakes.find(
-                    (stake) =>
-                      stake.address.toLowerCase() == club?.token.toLowerCase()
-                  )?.totalStaked || '0'}{' '}
+                  {parseInt(
+                    personalStakes
+                      .find(
+                        (stake) =>
+                          stake.address.toLowerCase() ==
+                          club?.token.toLowerCase()
+                      )
+                      ?.totalStaked.toLocaleString() || '0'
+                  )}{' '}
                   {club?.symbol}
                 </span>
               </div>

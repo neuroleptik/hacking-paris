@@ -6,6 +6,7 @@ import { getNonce, verifySignature } from '@/actions/auth/manage-nonce';
 import { Routes } from '@/constants/routes';
 import { type CompleteUserOnboardingSchema } from '@/schemas/onboarding/complete-user-onboarding-schema';
 
+import { Button } from '../ui/button';
 import { CompleteProfileStep } from './login/complete-profile-step';
 import { VerifyEmailCard } from './verify-email/verify-email-card';
 
@@ -140,9 +141,10 @@ export default function ConnectChilizWallet(props: { step: number }) {
       ) : step === 2 && email ? (
         <VerifyEmailCard email={email} />
       ) : (
-        <button
-          className="flex items-center gap-2 rounded bg-primary px-4 py-2 text-black hover:bg-primary/90 disabled:opacity-50"
+        <Button
+          className="flex items-center gap-2 rounded border px-4 py-2"
           onClick={connectWallet}
+          variant="outline"
           disabled={isLoading}
         >
           <Image
@@ -152,7 +154,7 @@ export default function ConnectChilizWallet(props: { step: number }) {
             height={20}
           />
           {isLoading ? 'Connecting...' : 'Connect Chiliz Wallet'}
-        </button>
+        </Button>
       )}
       {error && <div className="mt-1 text-xs text-red-500">{error}</div>}
     </div>
