@@ -4,6 +4,9 @@ interface TotalStakedData {
   totalStaked: string;
   totalStakedRaw: string;
   symbol: string;
+  data: {
+    totalStaked: string;
+  };
   error?: string;
 }
 
