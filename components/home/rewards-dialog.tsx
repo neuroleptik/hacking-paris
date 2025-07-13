@@ -1,4 +1,4 @@
-import { GiftIcon } from 'lucide-react';
+import Image from 'next/image';
 
 import {
   Dialog,
@@ -45,7 +45,12 @@ export function RewardsDialog({
       <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <GiftIcon className="size-5" />
+            <Image
+              src={club?.logo || ''}
+              alt={club?.name || ''}
+              width={30}
+              height={30}
+            />
             Fan Rewards - {clubName}
           </DialogTitle>
         </DialogHeader>

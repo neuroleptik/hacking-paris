@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { Loader2, ZapIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -33,6 +34,7 @@ interface StakeModalProps {
   club: {
     token: string;
     name: string;
+    logo: string;
     symbol: string;
     totalStaked: string;
   } | null;
@@ -73,13 +75,6 @@ export function StakeModal({
       try {
         const accounts = await window.ethereum.request({
           method: 'eth_requestAccounts'
-        });
-        const account = accounts[0];
-
-        const message = `I want to stake ${amount} ${club.symbol} tokens. Timestamp: ${Date.now()}`;
-        const signature = await window.ethereum.request({
-          method: 'personal_sign',
-          params: [message, account]
         });
 
         setIsLoading(true);
@@ -227,7 +222,12 @@ export function StakeModal({
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <ZapIcon className="size-5" />
+            <Image
+              src={club?.logo || ''}
+              alt={club?.name || ''}
+              width={30}
+              height={30}
+            />
             Stake {club?.symbol} tokens
           </DialogTitle>
         </DialogHeader>
