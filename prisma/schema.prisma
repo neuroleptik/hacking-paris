@@ -359,7 +359,7 @@ model User {
   organizationId               String?              @db.Uuid
   image                        String?              @db.VarChar(2048)
   name                         String?              @db.VarChar(64)
-  email                        String?              @unique
+  email                        String?
   emailVerified                DateTime?
   password                     String?              @db.VarChar(60)
   lastLogin                    DateTime?
