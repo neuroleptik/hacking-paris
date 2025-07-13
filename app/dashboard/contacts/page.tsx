@@ -62,6 +62,8 @@ export default async function ContactsPage({
 
   const hasAnyMembers = members.length > 0;
 
+  // get all contacts
+
   return (
     <div className="m-5 flex flex-col gap-5 w-2/3 mx-auto mt-10">
       <MembersCard
