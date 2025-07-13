@@ -145,6 +145,10 @@ export function ClubList() {
   const [selectedClubForRewards, setSelectedClubForRewards] =
     useState<Club | null>(null);
 
+  const { personalStakes } = useTokens();
+
+  console.log('personalStakes from club list', personalStakes);
+
   useEffect(() => {
     const fetchClubs = async () => {
       try {
@@ -270,7 +274,11 @@ export function ClubList() {
                   </div>
                   <div className="text-md">
                     <div className="font-semibold">
-                      {club.totalStaked} staked
+                      {club.totalStaked.toLocaleString('fr-FR')} staked /{' '}
+                      {(personalStakes[index] &&
+                        personalStakes[index].totalStaked.toLocaleString()) ||
+                        '0'}{' '}
+                      staked by me
                     </div>
                   </div>
                   <div className="flex gap-2">
