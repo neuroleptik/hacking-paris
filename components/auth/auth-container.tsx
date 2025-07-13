@@ -27,8 +27,11 @@ export function AuthContainer({
 }: AuthContainerProps): React.JSX.Element {
   return (
     <div className={containerVariants({ maxWidth })}>
-      <Link href={Routes.Root}>
-        <Logo className="justify-center" />
+      <Link
+        href={Routes.Root}
+        className=""
+      >
+        <Logo className="cursor-pointer justify-center rounded-full border-2 border-transparent transition-all duration-300 ease-in-out  hover:border-gray-300 hover:shadow-lg" />
       </Link>
       {children}
     </div>
