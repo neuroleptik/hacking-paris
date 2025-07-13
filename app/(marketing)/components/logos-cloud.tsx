@@ -27,16 +27,9 @@ export function SpotlightLogoCloud() {
 
   return (
     <div className="relative w-full overflow-hidden py-12 md:py-20">
-      <div className="relative z-20 mx-auto mb-4 max-w-4xl text-balance px-4 text-center text-lg font-semibold tracking-tight text-neutral-300 md:text-3xl">
+      <div className="relative z-20 mx-auto mb-4 max-w-4xl text-balance px-4 text-center text-lg font-semibold tracking-tight text-black dark:text-white md:text-3xl">
         <Balancer>
-          <h2
-            className={cn(
-              'inline-block bg-[radial-gradient(61.17%_178.53%_at_38.83%_-13.54%,#3B3B3B_0%,#888787_12.61%,#FFFFFF_50%,#888787_80%,#3B3B3B_100%)]',
-              'bg-clip-text text-transparent'
-            )}
-          >
-            Powered by Club Partners
-          </h2>
+          <h2 className={cn('inline-block ')}>Powered by Club Partners</h2>
         </Balancer>
       </div>
       <p className="mx-auto mb-8 mt-4 max-w-lg px-4 text-center font-sans text-base text-neutral-500 md:mb-10 md:text-lg">

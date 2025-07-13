@@ -9,7 +9,9 @@ import {
   useMotionValueEvent,
   useScroll
 } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { cn } from '@/lib/utils';
 
 import { Button } from './button';
@@ -73,13 +75,20 @@ export const Navbar = () => {
 
 const DesktopNav = ({ navItems, visible }: NavbarProps) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const { resolvedTheme } = useTheme();
+
+  const isDark = resolvedTheme === 'dark';
+  const backgroundLight = visible
+    ? 'rgba(255, 255, 255, 0.9)'
+    : 'rgba(255, 255, 255, 0.7)';
+  const backgroundDark = visible ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.4)';
 
   return (
     <motion.div
       onMouseLeave={() => setHoveredIndex(null)}
       animate={{
         backdropFilter: 'blur(16px)',
-        background: visible ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.4)',
+        background: isDark ? backgroundDark : backgroundLight,
         width: visible ? '38%' : '80%',
         height: visible ? '48px' : '64px',
         y: visible ? 8 : 0
@@ -87,7 +96,7 @@ const DesktopNav = ({ navItems, visible }: NavbarProps) => {
       initial={{
         width: '80%',
         height: '64px',
-        background: 'rgba(0, 0, 0, 0.4)'
+        background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.7)'
       }}
       transition={{
         type: 'spring',
@@ -113,7 +122,10 @@ const DesktopNav = ({ navItems, visible }: NavbarProps) => {
             className="relative"
           >
             <Link
-              className="relative px-3 py-1.5 text-white/90 transition-colors"
+              className={cn(
+                'relative px-3 py-1.5 transition-colors',
+                isDark ? 'text-white/90' : 'text-gray-700'
+              )}
               href={navItem.link}
             >
               <span className="relative z-10">{navItem.name}</span>
@@ -175,13 +187,14 @@ const DesktopNav = ({ navItems, visible }: NavbarProps) => {
                 as={Link}
                 href="/auth/login"
                 variant="primary"
-                className="hidden rounded-full border-0 bg-white/20 text-white hover:bg-white/30 md:block"
+                className="flex  w-20 items-center justify-center rounded-full sm:w-40"
               >
                 Sign In
               </Button>
             </motion.div>
           )}
         </AnimatePresence>
+        <ThemeToggle className="ml-2" />
       </div>
     </motion.div>
   );
@@ -189,12 +202,20 @@ const DesktopNav = ({ navItems, visible }: NavbarProps) => {
 
 const MobileNav = ({ navItems, visible }: NavbarProps) => {
   const [open, setOpen] = useState(false);
+  const { resolvedTheme } = useTheme();
+
+  const isDark = resolvedTheme === 'dark';
+  const backgroundLight = visible
+    ? 'rgba(255, 255, 255, 0.9)'
+    : 'rgba(255, 255, 255, 0.7)';
+  const backgroundDark = visible ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.4)';
+
   return (
     <>
       <motion.div
         animate={{
           backdropFilter: 'blur(16px)',
-          background: visible ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.4)',
+          background: isDark ? backgroundDark : backgroundLight,
           width: visible ? '80%' : '90%',
           y: visible ? 0 : 8,
           borderRadius: open ? '24px' : 'full',
@@ -202,7 +223,7 @@ const MobileNav = ({ navItems, visible }: NavbarProps) => {
         }}
         initial={{
           width: '80%',
-          background: 'rgba(0, 0, 0, 0.4)'
+          background: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.7)'
         }}
         transition={{
           type: 'spring',
@@ -210,19 +231,20 @@ const MobileNav = ({ navItems, visible }: NavbarProps) => {
           damping: 30
         }}
         className={cn(
-          'relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between rounded-full border border-solid border-white/40 backdrop-saturate-[1.8] lg:hidden'
+          'relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between rounded-full border border-solid backdrop-saturate-[1.8] lg:hidden',
+          isDark ? 'border-white/40' : 'border-black/40'
         )}
       >
         <div className="flex w-full flex-row items-center justify-between">
           <Logo />
           {open ? (
             <IconX
-              className="text-white/90"
+              className={isDark ? 'text-white/90' : 'text-black/90'}
               onClick={() => setOpen(!open)}
             />
           ) : (
             <IconMenu2
-              className="text-white/90"
+              className={isDark ? 'text-white/90' : 'text-black/90'}
               onClick={() => setOpen(!open)}
             />
           )}
@@ -248,7 +270,10 @@ const MobileNav = ({ navItems, visible }: NavbarProps) => {
                 stiffness: 400,
                 damping: 30
               }}
-              className="absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-3xl bg-black/80 px-6 py-8 backdrop-blur-xl backdrop-saturate-[1.8]"
+              className={cn(
+                'absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-3xl px-6 py-8 backdrop-blur-xl backdrop-saturate-[1.8]',
+                isDark ? 'bg-black/80' : 'bg-white/80'
+              )}
             >
               {navItems.map(
                 (navItem: { link: string; name: string }, idx: number) => (
@@ -256,12 +281,25 @@ const MobileNav = ({ navItems, visible }: NavbarProps) => {
                     key={`link=${idx}`}
                     href={navItem.link}
                     onClick={() => setOpen(false)}
-                    className="relative text-white/90 transition-colors hover:text-white"
+                    className={cn(
+                      'relative transition-colors',
+                      isDark
+                        ? 'text-white/90 hover:text-white'
+                        : 'text-black/90 hover:text-black'
+                    )}
                   >
                     <motion.span className="block">{navItem.name}</motion.span>
                   </Link>
                 )
               )}
+              <div
+                className={cn(
+                  'mt-4 border-t pt-4',
+                  isDark ? 'border-white/20' : 'border-black/20'
+                )}
+              >
+                <ThemeToggle />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

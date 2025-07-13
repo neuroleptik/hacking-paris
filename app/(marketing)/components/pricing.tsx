@@ -235,7 +235,7 @@ const DesktopCard = ({ plan }: { plan: Plan }) => {
               <span
                 className={cn(
                   'text-sm',
-                  feature.included ? 'text-neutral-300' : 'text-neutral-500'
+                  feature.included ? 'text-black dark:text-white' : 'text-white'
                 )}
               >
                 {feature.text}

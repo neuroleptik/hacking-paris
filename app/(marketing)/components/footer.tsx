@@ -46,7 +46,7 @@ export function Footer() {
   ];
 
   return (
-    <div className="relative mx-auto w-full max-w-7xl overflow-hidden border-t border-white/[0.1] bg-black px-8 py-20">
+    <div className="relative mx-auto w-full max-w-7xl overflow-hidden border-t border-gray-200 bg-white px-8 py-20 dark:border-white/[0.1] dark:bg-black">
       <div className="absolute bottom-full left-1/2 -mb-px flex h-8 -translate-x-1/2 items-end overflow-hidden">
         <div className="-mb-px flex h-[2px] w-56">
           <div className="blur-xs w-full flex-none [background-image:linear-gradient(90deg,rgba(255,255,255,0)_0%,#FFFFFF_32.29%,rgba(255,255,255,0.3)_67.19%,rgba(255,255,255,0)_100%)]" />

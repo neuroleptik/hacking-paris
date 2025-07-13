@@ -37,9 +37,9 @@ export function Hero() {
   return (
     <div
       ref={parentRef}
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black px-4 pt-20 md:px-8 md:pt-40"
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-white px-4 pt-20 dark:bg-black md:px-8 md:pt-40"
     >
-      <div className="relative z-20 mx-auto my-4 max-w-4xl text-balance text-center text-4xl font-semibold tracking-tight text-neutral-300 md:text-7xl">
+      <div className="relative z-20 mx-auto my-4 max-w-4xl text-balance text-center text-4xl font-semibold tracking-tight text-black dark:text-white md:text-7xl">
         <Balancer>
           <motion.h2
             initial={{ opacity: 0 }}
@@ -50,10 +50,7 @@ export function Hero() {
               filter: filterBlurPx
             }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className={cn(
-              'inline-block bg-[radial-gradient(61.17%_178.53%_at_38.83%_-13.54%,#3B3B3B_0%,#888787_12.61%,#FFFFFF_50%,#888787_80%,#3B3B3B_100%)]',
-              'bg-clip-text text-transparent'
-            )}
+            className={cn('inline-block ')}
           >
             Unite, Stake, Dominate
           </motion.h2>
@@ -63,7 +60,7 @@ export function Hero() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2, delay: 0.5 }}
-        className="relative z-20 mx-auto mt-4 max-w-xl px-4 text-center text-base/6 text-gray-500  sm:text-base"
+        className="relative z-20 mx-auto mt-4 max-w-xl px-4 text-center text-base/6 text-gray-600 dark:text-gray-500 sm:text-base"
       >
         Stake tokens with fellow fans to power your club to victory. Compete in
         global rankings, join organizations, and unlock exclusive rewards as
@@ -107,13 +104,6 @@ export function Hero() {
             width={1920}
             height={1080}
             className="h-auto  w-full rounded-[20px]  object-cover"
-          />
-          <div
-            className="absolute inset-0 rounded-[20px]"
-            style={{
-              background:
-                'linear-gradient(179.87deg, rgba(0, 0, 0, 0) 0.11%, rgba(0, 0, 0, 0.8) 69.48%, #000000 92.79%)'
-            }}
           />
         </div>
       </motion.div>

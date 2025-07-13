@@ -219,12 +219,8 @@ export function Rewards() {
 
   return (
     <div className="mx-auto w-full max-w-7xl p-4 md:my-20 md:px-8 md:py-20">
-      <div className="relative z-20 mx-auto mb-4 max-w-4xl text-balance text-center text-lg font-semibold tracking-tight text-neutral-300 md:text-3xl">
-        <h2
-          className={cn(
-            'inline-block bg-gradient-to-r from-primary via-white to-secondary bg-clip-text text-3xl text-transparent md:text-6xl'
-          )}
-        >
+      <div className="relative z-20 mx-auto mb-4 max-w-4xl text-balance text-center text-lg font-semibold tracking-tight text-black dark:text-white md:text-3xl">
+        <h2 className={cn('inline-block text-3xl  md:text-6xl')}>
           Exclusive Rewards
         </h2>
       </div>

@@ -168,7 +168,7 @@ export default function CTA() {
   }, [controls, inView]);
 
   return (
-    <div className="relative mx-auto flex min-h-[80vh] w-full max-w-7xl items-center justify-center bg-black px-4 sm:px-6 md:min-h-dvh lg:px-8">
+    <div className="relative mx-auto flex min-h-[80vh] w-full max-w-7xl items-center justify-center bg-white px-4 dark:bg-black sm:px-6 md:min-h-dvh lg:px-8">
       <LineGradient position="left" />
       <motion.div
         ref={ref}
@@ -180,8 +180,7 @@ export default function CTA() {
           <h2
             className={cn(
               'inline-block text-3xl font-bold md:text-4xl lg:text-5xl xl:text-6xl',
-              'bg-gradient-to-b from-[#3B3B3B] via-[#FFFFFF] to-[#3B3B3B]',
-              'bg-clip-text text-transparent',
+              'text-black dark:text-white',
               'px-4 md:px-8'
             )}
           >
@@ -192,7 +191,7 @@ export default function CTA() {
             competing for glory. Your club needs you in the Club War arena.
           </p>
         </div>
-        <BackgroundGrid className="z-0 mt-8 md:mt-16 lg:mt-36" />
+        <BackgroundGrid className="z-0 mt-8 hidden dark:block md:mt-16 lg:mt-36" />
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={controls}
