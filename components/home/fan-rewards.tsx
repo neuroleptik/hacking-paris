@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Medal, Shirt, Star, Ticket, Trophy, Users } from 'lucide-react';
+import { Lock, Medal, Shirt, Star, Ticket, Trophy, Users } from 'lucide-react';
+import { toast } from 'sonner';
 
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import rewardsData from '@/data/rewards.json';
@@ -14,6 +16,11 @@ interface Reward {
   title: string;
   shortDescription: string;
   minimumPoints: number;
+}
+
+interface ClaimedReward {
+  id: string;
+  status: 'pending' | 'claimed';
 }
 
 const getIconForReward = (title: string) => {
@@ -38,7 +45,6 @@ const getIconForReward = (title: string) => {
 };
 
 const getClubRewardsKey = (clubName: string): string => {
-  // Mapping des noms de clubs vers les clés du fichier rewards.json
   const clubMapping: Record<string, string> = {
     'Paris Saint-Germain F.C.': 'Paris Saint-Germain',
     PSG: 'Paris Saint-Germain',
@@ -54,86 +60,188 @@ const getClubRewardsKey = (clubName: string): string => {
 
 export const FanRewards = ({ clubName, userTokens }: FanRewardsProps) => {
   const [rewards, setRewards] = useState<Reward[]>([]);
+  const [claimedRewards, setClaimedRewards] = useState<ClaimedReward[]>([]);
+  const [isClaimingReward, setIsClaimingReward] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('Club name:', clubName);
-    console.log('Available rewards:', Object.keys(rewardsData));
-
     const rewardsKey = getClubRewardsKey(clubName);
-    console.log('Looking for rewards with key:', rewardsKey);
-
     const clubRewards =
       rewardsData[rewardsKey as keyof typeof rewardsData] || [];
-    console.log('Found rewards:', clubRewards);
-
     setRewards(clubRewards);
+
+    // Load claimed rewards from localStorage
+    // const savedClaimedRewards = localStorage.getItem(
+    //   `claimed-rewards-${clubName}`
+    // );
+    // if (savedClaimedRewards) {
+    //   setClaimedRewards(JSON.parse(savedClaimedRewards));
+    // }
   }, [clubName]);
 
-  const getProgressToNextReward = (minimumPoints: number) => {
-    if (userTokens >= minimumPoints) return 100;
-    const previousReward = rewards.find((r) => r.minimumPoints < minimumPoints);
-    const basePoints = previousReward ? previousReward.minimumPoints : 0;
-    const range = minimumPoints - basePoints;
-    const progress = ((userTokens - basePoints) / range) * 100;
-    return Math.max(0, Math.min(100, progress));
+  const handleClaimReward = async (reward: Reward) => {
+    const rewardId = `${clubName}-${reward.title}`;
+    setIsClaimingReward(rewardId);
+
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      const newClaimedRewards = [
+        ...claimedRewards,
+        { id: rewardId, status: 'claimed' as const }
+      ];
+      setClaimedRewards(newClaimedRewards);
+
+      // Save to localStorage
+      localStorage.setItem(
+        `claimed-rewards-${clubName}`,
+        JSON.stringify(newClaimedRewards)
+      );
+
+      toast.success(`You've successfully claimed: ${reward.title}`, {
+        duration: 3000
+      });
+    } catch (error) {
+      toast.error('Failed to claim reward', {
+        description: 'Please try again later',
+        duration: 3000
+      });
+    } finally {
+      setIsClaimingReward(null);
+    }
   };
 
   if (rewards.length === 0) {
     return (
-      <div className="space-y-6 p-4">
-        <h2 className="mb-6 text-2xl font-bold">Fan Rewards</h2>
+      <div className="space-y-6">
+        <h2 className="text-xl font-semibold">Reward Tiers</h2>
         <p className="text-gray-600">No rewards available for this club yet.</p>
       </div>
     );
   }
 
-  return (
-    <div className="space-y-6 p-4">
-      <h2 className="mb-6 text-2xl font-bold">Fan Rewards</h2>
-      <div className="grid gap-4">
-        {rewards.map((reward, index) => {
-          const Icon = getIconForReward(reward.title);
-          const progress = getProgressToNextReward(reward.minimumPoints);
-          const isUnlocked = userTokens >= reward.minimumPoints;
+  // Sort rewards by minimum points required
+  const sortedRewards = [...rewards].sort(
+    (a, b) => a.minimumPoints - b.minimumPoints
+  );
 
-          return (
-            <Card
-              key={index}
-              className={`p-4 `}
-            >
-              <div className="flex items-start gap-4">
+  // Find the next tier to unlock
+  const nextTier = sortedRewards.find(
+    (reward) => reward.minimumPoints > userTokens
+  );
+  const currentTier = nextTier
+    ? sortedRewards[sortedRewards.indexOf(nextTier) - 1]
+    : sortedRewards[sortedRewards.length - 1];
+
+  return (
+    <div className="space-y-6">
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold">Reward Tiers</h2>
+        {nextTier && (
+          <p className="mt-2 text-sm text-gray-600">
+            {nextTier.minimumPoints - userTokens} more points to unlock{' '}
+            {nextTier.title}
+          </p>
+        )}
+      </div>
+
+      <div className="relative">
+        <div className="absolute left-4 h-full w-0.5 bg-gray-100" />
+
+        <div className="space-y-8">
+          {sortedRewards.map((reward, index) => {
+            const Icon = getIconForReward(reward.title);
+            const isUnlocked = userTokens >= reward.minimumPoints;
+            const isNext = nextTier?.minimumPoints === reward.minimumPoints;
+            const rewardId = `${clubName}-${reward.title}`;
+            const isClaimed = claimedRewards.some((cr) => cr.id === rewardId);
+            const isLoading = isClaimingReward === rewardId;
+
+            return (
+              <div
+                key={index}
+                className={`relative pl-12 ${isUnlocked ? '' : 'opacity-75'}`}
+              >
                 <div
-                  className={`rounded-full p-2 ${
-                    isUnlocked
-                      ? 'bg-green-100 text-green-600'
-                      : 'bg-gray-100 text-gray-600'
-                  }`}
+                  className={`absolute left-2 z-10 flex size-5 items-center justify-center rounded-full 
+                    ${
+                      isUnlocked
+                        ? 'bg-green-100 text-green-600'
+                        : isNext
+                          ? 'bg-blue-100 text-blue-600'
+                          : 'bg-gray-100 text-gray-400'
+                    }`}
                 >
-                  <Icon className="size-6" />
+                  <div className="size-2 rounded-full bg-current" />
                 </div>
-                <div className="flex-1">
-                  <div className="mb-2 flex items-center justify-between">
-                    <h3 className="font-semibold">{reward.title}</h3>
-                    <span
-                      className={`text-sm ${
-                        isUnlocked ? 'text-green-600' : 'text-gray-600'
+
+                <Card
+                  className={`border-l-4 ${
+                    isUnlocked
+                      ? 'border-l-green-500'
+                      : isNext
+                        ? 'border-l-blue-500'
+                        : 'border-l-gray-200'
+                  } p-4`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`rounded-lg p-2 ${
+                        isUnlocked
+                          ? 'bg-green-50 text-green-600'
+                          : isNext
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'bg-gray-50 text-gray-400'
                       }`}
                     >
-                      {userTokens}/{reward.minimumPoints} points
-                    </span>
+                      {isUnlocked ? (
+                        <Icon className="size-5" />
+                      ) : (
+                        <Lock className="size-5" />
+                      )}
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="mb-1 flex items-center justify-between">
+                        <h3 className="font-medium">{reward.title}</h3>
+                        <span
+                          className={`text-sm ${
+                            isUnlocked
+                              ? 'text-green-600'
+                              : isNext
+                                ? 'text-blue-600'
+                                : 'text-gray-500'
+                          }`}
+                        >
+                          {reward.minimumPoints} points required
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600">
+                        {reward.shortDescription}
+                      </p>
+                      {isUnlocked && (
+                        <div className="flex justify-end mt-3">
+                          <Button
+                            variant={isClaimed ? 'outline' : 'default'}
+                            size="sm"
+                            disabled={isClaimed || isLoading}
+                            onClick={() => handleClaimReward(reward)}
+                          >
+                            {isLoading
+                              ? 'Claiming...'
+                              : isClaimed
+                                ? 'Claimed'
+                                : 'Claim Reward'}
+                          </Button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <p className="mb-2 text-sm text-gray-600">
-                    {reward.shortDescription}
-                  </p>
-                  <Progress
-                    value={progress}
-                    className={`h-2 ${isUnlocked ? 'bg-green-100' : 'bg-gray-100'}`}
-                  />
-                </div>
+                </Card>
               </div>
-            </Card>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

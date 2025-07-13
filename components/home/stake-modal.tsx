@@ -35,6 +35,10 @@ interface StakeModalProps {
     symbol: string;
     totalStaked: string;
   } | null;
+  personalStakes: {
+    address: string;
+    totalStaked: string;
+  }[];
   isOpen: boolean;
   onClose: () => void;
   onStakeSuccess?: () => void;
@@ -42,6 +46,7 @@ interface StakeModalProps {
 
 export function StakeModal({
   club,
+  personalStakes,
   isOpen,
   onClose,
   onStakeSuccess
@@ -266,7 +271,11 @@ export function StakeModal({
               <div className="flex justify-between">
                 <span>Current total staked:</span>
                 <span>
-                  {club?.totalStaked} {club?.symbol}
+                  {personalStakes.find(
+                    (stake) =>
+                      stake.address.toLowerCase() == club?.token.toLowerCase()
+                  )?.totalStaked || '0'}{' '}
+                  {club?.symbol}
                 </span>
               </div>
               <div className="flex justify-between text-yellow-600">

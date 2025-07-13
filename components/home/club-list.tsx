@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { GiftIcon, TrophyIcon } from 'lucide-react';
+import { GiftIcon, LockIcon, TrophyIcon } from 'lucide-react';
 
 import {
   Card,
@@ -18,6 +18,7 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { DebugPanel } from './debug-panel';
 import { RewardsDialog } from './rewards-dialog';
+import { SeasonTimer } from './season-timer';
 import { StakeModal } from './stake-modal';
 import { TokensComponent } from './tokens-component';
 
@@ -189,6 +190,7 @@ export function ClubList() {
 
   const { tokens, tokenPools } = useTokens();
   const { refresh: refreshTotalStaked } = useTotalStaked();
+
   console.log('initialTokens', tokens);
 
   const handleStakeClick = (e: React.MouseEvent, club: Club) => {
@@ -230,6 +232,8 @@ export function ClubList() {
           onRefresh={refreshTotalStaked}
         />
       )}
+      <SeasonTimer />
+
       <Card className="m-5 mx-auto w-2/3 p-5">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -272,14 +276,21 @@ export function ClubList() {
                       {club.symbol}
                     </p>
                   </div>
-                  <div className="text-md">
+                  <div className="text-md me-4 pe-3">
                     <div className="font-semibold">
-                      {club.totalStaked.toLocaleString('fr-FR')} staked /{' '}
-                      {(personalStakes[index] &&
-                        personalStakes[index].totalStaked.toLocaleString()) ||
-                        '0'}{' '}
-                      staked by me
+                      {club.totalStaked.toLocaleString()} total staked
                     </div>
+                    <Badge className="text-sm text-muted-foreground bg-orange-500/20 text-orange-500 mt-2 cursor-default">
+                      <LockIcon className="size-4 mr-1" />
+                      {personalStakes
+                        .find(
+                          (stake) =>
+                            stake.address.toLowerCase() ==
+                            club.token.toLowerCase()
+                        )
+                        ?.totalStaked.toLocaleString() || '0'}{' '}
+                      staked by you
+                    </Badge>
                   </div>
                   <div className="flex gap-2">
                     <Button
@@ -306,6 +317,7 @@ export function ClubList() {
 
         <StakeModal
           club={selectedClubForStaking}
+          personalStakes={personalStakes}
           isOpen={stakeModalOpen}
           onClose={() => {
             setStakeModalOpen(false);
@@ -324,6 +336,8 @@ export function ClubList() {
             }}
             clubName={selectedClubForRewards.name}
             totalStaked={Number(selectedClubForRewards.totalStaked)}
+            club={selectedClubForRewards}
+            personalStakes={personalStakes}
           />
         )}
         <DebugPanel />
